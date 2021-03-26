@@ -1,6 +1,9 @@
 
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.net.*;
@@ -13,6 +16,8 @@ public class Server implements Runnable {
     private final BufferedReader in;
     private final PrintStream out;
     private final String clientMachine;
+    private static int worldHeight = 0;
+    private static int worldWidth = 0;
 
 
 
@@ -39,6 +44,34 @@ public class Server implements Runnable {
             closeQuietly();
         }
     }
+
+    public void getDataFromJSon(){
+        // Create World Object from World instance, using fromJson()
+        // Known as deserialisation
+        try {
+
+            /*
+            Establish file to be used as input.
+            Create a JSon element from the file.
+            Create JSon object from the element.
+             */
+
+            File input = new File("src/main/java/WorldSpecs.json");
+            JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
+            JsonObject fileObject = fileElement.getAsJsonObject();
+
+            //Extracting basic fields
+
+            worldHeight = fileObject.get("height").getAsInt();
+            worldWidth = fileObject.get("height").getAsInt();
+            System.out.println("height: " + worldHeight);
+            System.out.println("width: " + worldWidth);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     private void closeQuietly() {
         try { in.close(); out.close();
