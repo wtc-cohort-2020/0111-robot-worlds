@@ -43,4 +43,14 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public String commandString() {
+        Scanner inputScanner = new Scanner(System.in);
+        String input = inputScanner.nextLine();
+
+    }
+
+
+
+
 }
