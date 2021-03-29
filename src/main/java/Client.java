@@ -7,8 +7,14 @@ import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
+        /*
+       Separate try-catch for invalid args?
+         */
+
+
         try (
-                Socket socket = new Socket("127.0.0.1", 1999);
+                //Socket socket = new Socket("127.0.0.1", 1999);
+                Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
                 PrintStream out = new PrintStream(socket.getOutputStream());
                 BufferedReader in = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()))
