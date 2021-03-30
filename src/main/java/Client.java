@@ -37,9 +37,9 @@ public class Client {
             String messageFromServer = in.readLine();
             System.out.println("Response: "+messageFromServer);
 
-            //command = getInput("Start Up! " + name + ", enter a command: ");
+
             while (true){
-                // Get name of robot
+
 
                 input = scanner.nextLine();
                 if(input.equalsIgnoreCase("exit")){
@@ -67,10 +67,10 @@ public class Client {
         }
     }
 
-    public static ClientCommand commandString(String input) {
+    public static void commandString(String input) {
         System.out.println(input);
         splitCommand(input);
-        return new ClientCommand(name, command, arguments);
+//        return new ClientCommand(name, command, arguments);
     }
 
 
