@@ -1,4 +1,7 @@
+package Server;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.net.*;
@@ -9,8 +12,10 @@ public class Server implements Runnable {
     private final BufferedReader in;
     private final PrintStream out;
     private final String clientMachine;
+    private Robot robot;
+    private RobotCommand command;
 
-    public Server(Socket socket) throws IOException {
+    public Server(Socket socket, World world) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
         System.out.println("Connection from " + clientMachine);
 
@@ -23,9 +28,15 @@ public class Server implements Runnable {
     public void run() {
         try {
             String messageFromClient;
+            JsonObject jsonMessage;
+            command = new RobotCommand(robot, this);
             while((messageFromClient = in.readLine()) != null) {
+                if(messageFromClient.equals("exit")){
+                    break;
+                }
                 System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                out.println("Thanks for this message: "+messageFromClient);
+                jsonMessage = new JsonParser().parse(messageFromClient).getAsJsonObject();
+                command.NewCommand(jsonMessage);
             }
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
@@ -37,5 +48,10 @@ public class Server implements Runnable {
     private void closeQuietly() {
         try { in.close(); out.close();
         } catch(IOException ignored) {}
+    }
+
+    public void sendResponse(String response){
+        out.println(response);
+        out.flush();
     }
 }
