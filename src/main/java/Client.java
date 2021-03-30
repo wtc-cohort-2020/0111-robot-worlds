@@ -1,5 +1,7 @@
 
 
+import com.google.gson.Gson;
+
 import java.net.*;
 import java.io.*;
 import java.security.cert.TrustAnchor;
@@ -8,9 +10,9 @@ import java.util.Scanner;
 
 public class Client {
     private static String name;
-    private static String command;
-    static String [] arguments;
-    static Scanner scanner;
+    static String command;
+    static String [] arguments = new String[2];
+    static Scanner scanner = new Scanner(System.in);;
 
 
 
@@ -28,29 +30,32 @@ public class Client {
                         socket.getInputStream()))
         )
         {
-//            Scanner scanner = new Scanner(System.in);
-//            String name = getInput("What do you want to name your robot?");
+            name = getInput("Please enter your name: ");
+            String input;
             out.println("Hello WeThinkCode");
             out.flush();
             String messageFromServer = in.readLine();
             System.out.println("Response: "+messageFromServer);
+
+            //command = getInput("Start Up! " + name + ", enter a command: ");
             while (true){
                 // Get name of robot
-                name = getInput("Please enter your name: ");
-                command = getInput("Start Up!" + name + ", enter a command: ");
-                if(command.equalsIgnoreCase("exit")){
+
+                input = scanner.nextLine();
+                if(input.equalsIgnoreCase("exit")){
                     break;
                 }
                 else {
                     /*
                     Some code to handle the command
                      */
-                    
+                    commandString(input);
+                    transformtoJSOn();
 
 
 
 
-                    out.println(command);
+                    out.println(input);
                     out.flush();
                 }
                 messageFromServer = in.readLine();
@@ -62,12 +67,9 @@ public class Client {
         }
     }
 
-    public ClientCommand commandString() {
-        Scanner inputScanner = new Scanner(System.in);
-        String input = inputScanner.nextLine();
-
-
-
+    public static ClientCommand commandString(String input) {
+        System.out.println(input);
+        splitCommand(input);
         return new ClientCommand(name, command, arguments);
     }
 
@@ -83,5 +85,35 @@ public class Client {
         return input;
     }
 
+    public static void splitCommand(String input) {
+        String [] commandAndArgs = input.split(" ");
+
+        switch(commandAndArgs.length) {
+            case 1:
+                command = commandAndArgs[0];
+                return;
+
+            case 2:
+
+                command = commandAndArgs[0];
+                arguments[0] = commandAndArgs[1];
+                return;
+
+
+            case 3:
+                command = commandAndArgs[0];
+                arguments[0] = commandAndArgs[1];
+                arguments[1] = commandAndArgs[2];
+                return;
+        }
+    }
+
+
+    public static void transformtoJSOn() {
+        Gson gson = new Gson();
+        ClientCommand myCommand = new ClientCommand(name, command, arguments);
+        String jsonInString = gson.toJson(myCommand);
+        System.out.println(jsonInString);
+    }
 
 }
