@@ -45,15 +45,16 @@ public class Client {
                 myRobot.addProperty("robot", "Gert");
 
                 splitCommand(input);
-//                System.out.println(command);
-//                System.out.println(Arrays.toString(arguments));
+                System.out.println(command);
+                System.out.println(arguments[0]);
 
                 myRobot.addProperty("command", command);
 
-                try {
-                    myRobot.addProperty("arguments", arguments[0] + " " + arguments[1]);
-                } catch(ArrayIndexOutOfBoundsException e) {
-                    myRobot.addProperty("arguments", arguments[0]);
+                if (arguments.length == 2) {
+                    myRobot.addProperty("arguments", arguments.toString());
+                }
+                if (arguments.length==1) {
+                    myRobot.addProperty("arguments", arguments.toString());
                 }
                 out.println(myRobot.toString());
                 out.flush();
