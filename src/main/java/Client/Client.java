@@ -28,9 +28,9 @@ public class Client {
             Scanner scanner = new Scanner(System.in);
             String input;
             JsonObject myRobot = new JsonObject();
-//            myRobot.addProperty("robot", "Gert");
-//            myRobot.addProperty("command", "launch");
-//            myRobot.addProperty("arguments", "");
+            myRobot.addProperty("robot", "Gert");
+            myRobot.addProperty("command", "launch");
+            myRobot.addProperty("arguments", args[0] + " " + args[1]);
             out.println(myRobot.toString());
             out.flush();
             String messageFromServer = in.readLine();
@@ -46,30 +46,17 @@ public class Client {
 
                 splitCommand(input);
 
-                if(input.equalsIgnoreCase("forward")){
-                    myRobot.addProperty("command", command);
+
+                myRobot.addProperty("command", command);
+
+                try {
+                    myRobot.addProperty("arguments", args[0] + " " + args[1]);
+                } catch(NullPointerException e) {
                     myRobot.addProperty("arguments", args[0]);
-                    out.println(myRobot.toString());
-                    out.flush();
                 }
-                if(input.equalsIgnoreCase("back")){
-                    myRobot.addProperty("command", command);
-                    myRobot.addProperty("arguments", args[0]);
-                    out.println(myRobot.toString());
-                    out.flush();
-                }
-                if(input.equalsIgnoreCase("right")){
-                    myRobot.addProperty("command", command);
-                    myRobot.addProperty("arguments", args[0]);
-                    out.println(myRobot.toString());
-                    out.flush();
-                }
-                if(input.equalsIgnoreCase("left")){
-                    myRobot.addProperty("command", command);
-                    myRobot.addProperty("arguments", args[0]);
-                    out.println(myRobot.toString());
-                    out.flush();
-                }
+                out.println(myRobot.toString());
+                out.flush();
+
                 messageFromServer = in.readLine();
                 System.out.println("Response: "+messageFromServer);
             }
