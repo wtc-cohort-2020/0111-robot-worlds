@@ -36,33 +36,29 @@ public class Client {
                 if(input.equalsIgnoreCase("quit")){
                     break;
                 }
+
+                myRobot = new JsonObject();
+                myRobot.addProperty("robot", "Gert");
+
                 if(input.equalsIgnoreCase("forward")){
-                    myRobot = new JsonObject();
-                    myRobot.addProperty("robot", "Gert");
                     myRobot.addProperty("command", "forward");
                     myRobot.addProperty("arguments", 5);
                     out.println(myRobot.toString());
                     out.flush();
                 }
                 if(input.equalsIgnoreCase("back")){
-                    myRobot = new JsonObject();
-                    myRobot.addProperty("robot", "Gert");
                     myRobot.addProperty("command", "back");
                     myRobot.addProperty("arguments", 5);
                     out.println(myRobot.toString());
                     out.flush();
                 }
                 if(input.equalsIgnoreCase("right")){
-                    myRobot = new JsonObject();
-                    myRobot.addProperty("robot", "Gert");
                     myRobot.addProperty("command", "turn");
                     myRobot.addProperty("arguments", "right");
                     out.println(myRobot.toString());
                     out.flush();
                 }
                 if(input.equalsIgnoreCase("left")){
-                    myRobot = new JsonObject();
-                    myRobot.addProperty("robot", "Gert");
                     myRobot.addProperty("command", "turn");
                     myRobot.addProperty("arguments", "left");
                     out.println(myRobot.toString());
