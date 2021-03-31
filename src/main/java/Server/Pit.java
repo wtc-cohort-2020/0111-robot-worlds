@@ -22,7 +22,8 @@ public class Pit {
     }
 
     public boolean blocksPosition(int positionX, int positionY){
-        return false;
+        return (positionX >= bottomLeftX && positionX <= bottomLeftX + 4) &&
+                (positionY >= bottomLeftY && positionY <= bottomLeftY + 4);
     }
 
     public boolean blocksPath(int newPositionX, int newPositionY, int positionX, int positionY){

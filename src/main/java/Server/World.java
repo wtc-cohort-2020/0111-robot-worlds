@@ -79,4 +79,12 @@ public class World {
             }
         }
     }
+
+    public ArrayList<Obstacle> getObstacles(){
+        return obstacles;
+    }
+
+    public ArrayList<Pit> getPits(){
+        return pits;
+    }
 }

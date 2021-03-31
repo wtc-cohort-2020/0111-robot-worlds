@@ -14,8 +14,10 @@ public class Server implements Runnable {
     private final String clientMachine;
     private Robot robot;
     private RobotCommand command;
+    private World world;
 
     public Server(Socket socket, World world) throws IOException {
+        this.world = world;
         clientMachine = socket.getInetAddress().getHostName();
         System.out.println("Connection from " + clientMachine);
 
@@ -29,7 +31,7 @@ public class Server implements Runnable {
         try {
             String messageFromClient;
             JsonObject jsonMessage;
-            command = new RobotCommand(robot, this);
+            command = new RobotCommand(robot, this, world);
             while((messageFromClient = in.readLine()) != null) {
                 if(messageFromClient.equals("exit")){
                     break;
