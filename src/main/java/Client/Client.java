@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Client {
+    static String command;
+    static String[] arguments = new String[2];
+
+
     public static void main(String[] args) {
         try (
                 Socket socket = new Socket("127.0.0.1", 1999);
@@ -24,9 +28,9 @@ public class Client {
             Scanner scanner = new Scanner(System.in);
             String input;
             JsonObject myRobot = new JsonObject();
-            myRobot.addProperty("robot", "Gert");
-            myRobot.addProperty("command", "launch");
-            myRobot.addProperty("arguments", "");
+//            myRobot.addProperty("robot", "Gert");
+//            myRobot.addProperty("command", "launch");
+//            myRobot.addProperty("arguments", "");
             out.println(myRobot.toString());
             out.flush();
             String messageFromServer = in.readLine();
@@ -40,27 +44,29 @@ public class Client {
                 myRobot = new JsonObject();
                 myRobot.addProperty("robot", "Gert");
 
+                splitCommand(input);
+
                 if(input.equalsIgnoreCase("forward")){
-                    myRobot.addProperty("command", "forward");
-                    myRobot.addProperty("arguments", 5);
+                    myRobot.addProperty("command", command);
+                    myRobot.addProperty("arguments", args[0]);
                     out.println(myRobot.toString());
                     out.flush();
                 }
                 if(input.equalsIgnoreCase("back")){
-                    myRobot.addProperty("command", "back");
-                    myRobot.addProperty("arguments", 5);
+                    myRobot.addProperty("command", command);
+                    myRobot.addProperty("arguments", args[0]);
                     out.println(myRobot.toString());
                     out.flush();
                 }
                 if(input.equalsIgnoreCase("right")){
-                    myRobot.addProperty("command", "turn");
-                    myRobot.addProperty("arguments", "right");
+                    myRobot.addProperty("command", command);
+                    myRobot.addProperty("arguments", args[0]);
                     out.println(myRobot.toString());
                     out.flush();
                 }
                 if(input.equalsIgnoreCase("left")){
-                    myRobot.addProperty("command", "turn");
-                    myRobot.addProperty("arguments", "left");
+                    myRobot.addProperty("command", command);
+                    myRobot.addProperty("arguments", args[0]);
                     out.println(myRobot.toString());
                     out.flush();
                 }
@@ -72,4 +78,37 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public static void commandString(String input) {
+        System.out.println(input);
+        splitCommand(input);
+
+    }
+
+
+
+
+    public static void splitCommand(String input) {
+        String [] commandAndArgs = input.split(" ");
+
+        switch(commandAndArgs.length) {
+            case 1:
+                command = commandAndArgs[0];
+                return;
+
+            case 2:
+
+                command = commandAndArgs[0];
+                arguments[0] = commandAndArgs[1];
+                return;
+
+
+            case 3:
+                command = commandAndArgs[0];
+                arguments[0] = commandAndArgs[1];
+                arguments[1] = commandAndArgs[2];
+                return;
+        }
+    }
+
 }
