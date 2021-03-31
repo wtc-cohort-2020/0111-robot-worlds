@@ -51,10 +51,10 @@ public class Client {
                 myRobot.addProperty("command", command);
 
                 if (arguments.length == 2) {
-                    myRobot.addProperty("arguments", arguments.toString());
+                    myRobot.addProperty("arguments", arguments[0]);
                 }
                 if (arguments.length==1) {
-                    myRobot.addProperty("arguments", arguments.toString());
+                    myRobot.addProperty("arguments", arguments[0]);
                 }
                 out.println(myRobot.toString());
                 out.flush();
