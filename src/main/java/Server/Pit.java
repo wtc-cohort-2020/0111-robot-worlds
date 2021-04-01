@@ -26,6 +26,10 @@ public class Pit {
                 (positionY >= bottomLeftY && positionY <= bottomLeftY + 4);
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public boolean blocksPath(int newPositionX, int newPositionY, int positionX, int positionY){
         return true;
     }

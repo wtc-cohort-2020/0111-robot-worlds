@@ -19,6 +19,11 @@ public class World {
         CreatePits();
     }
 
+    public World(ArrayList<Pit> pits,ArrayList<Obstacle> obstacles){
+        this.pits = pits;
+        this.obstacles = obstacles;
+    }
+
     public void AddRobot(Robot robot, String name){
         allRobots.put(name, robot);
     }
