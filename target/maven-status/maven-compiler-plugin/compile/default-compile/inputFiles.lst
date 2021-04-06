@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /home/wtc/group_project_robot/0111-robot-worlds/src/main/java/Server/Robot.java
 /home/wtc/group_project_robot/0111-robot-worlds/src/main/java/Server/MovementStatus.java
 /home/wtc/group_project_robot/0111-robot-worlds/src/main/java/Server/RobotCommand.java
@@ -11,3 +12,8 @@
 /home/wtc/group_project_robot/0111-robot-worlds/src/main/java/Server/World.java
 /home/wtc/group_project_robot/0111-robot-worlds/src/main/java/Server/TestingStuff.java
 /home/wtc/group_project_robot/0111-robot-worlds/src/main/java/Server/RobotStatus.java
+=======
+/home/wtc/problems/0111-robot-worlds/src/main/java/Server.java
+/home/wtc/problems/0111-robot-worlds/src/main/java/MultiServers.java
+/home/wtc/problems/0111-robot-worlds/src/main/java/Client.java
+>>>>>>> d63a0cf22293d30d30c2b0d878cefe464f20581f
