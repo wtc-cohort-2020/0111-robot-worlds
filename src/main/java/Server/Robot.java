@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Robot {
     private int x;
@@ -189,7 +190,15 @@ public class Robot {
     }
 
     public void reload() {
-        numberShots = 6 - shotDistance;
+        try {
+            TimeUnit.SECONDS.sleep(5);
+            numberShots = 6 - shotDistance;
+        }
+
+    
+        catch (InterruptedException e) {
+            System.out.println("Timeout occurred.");
+        }
     }
 
     public int getX() {
