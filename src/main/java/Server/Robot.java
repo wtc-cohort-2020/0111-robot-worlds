@@ -12,7 +12,7 @@ public class Robot {
     private final World world;
     private final int shotDistance;
     private int numberShots = 0;
-    private Random random;
+    private Random random = new Random();
 
     public Robot(String name, World world){
         this.x = 0;
@@ -21,6 +21,7 @@ public class Robot {
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
+
         numberShots = random.nextInt(6);
         shotDistance =  6 - numberShots;
     }
@@ -195,10 +196,14 @@ public class Robot {
             numberShots = 6 - shotDistance;
         }
 
-    
+
         catch (InterruptedException e) {
             System.out.println("Timeout occurred.");
         }
+    }
+
+    public void beenHit () {
+
     }
 
     public int getX() {
