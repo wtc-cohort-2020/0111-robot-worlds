@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="0111-robot-worlds" target="15" />
+      <module name="0111-robot-worlds" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

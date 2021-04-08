@@ -1,5 +1,7 @@
 package Server;
 
+import java.util.Random;
+
 public class Robot {
     private int x;
     private int y;
@@ -7,6 +9,9 @@ public class Robot {
     private RobotStatus status;
     private Direction currentDirection;
     private final World world;
+    private final int shotDistance;
+    private int numberShots = 0;
+    private Random random;
 
     public Robot(String name, World world){
         this.x = 0;
@@ -15,6 +20,8 @@ public class Robot {
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
+        numberShots = random.nextInt(6);
+        shotDistance =  6 - numberShots;
     }
 
     public MovementStatus moveForward(){
@@ -150,6 +157,39 @@ public class Robot {
                 currentDirection = Direction.NORTH;
             }
         }
+    }
+
+    // nmeintje code
+    public void fire() {
+
+        if (numberShots == 0) {
+            System.out.println("You need to reload!");
+            return;
+        }
+        /*
+        Within current direction, check if another robot in current x/y +/-
+        shotDistance.
+         */
+        if (currentDirection == Direction.NORTH) {
+            // if another robot in current y + shotDistance
+        }
+        if (currentDirection == Direction.EAST) {
+            // if another robot in current x + shotDistance
+        }
+        if (currentDirection == Direction.SOUTH) {
+            // if another robot in current y - shotDistance
+        }
+        if (currentDirection == Direction.WEST) {
+            // if another robot in current x - shotDistance
+        }
+
+        //Decrease number shots by 1.
+        numberShots -= 1;
+
+    }
+
+    public void reload() {
+        numberShots = 6 - shotDistance;
     }
 
     public int getX() {
