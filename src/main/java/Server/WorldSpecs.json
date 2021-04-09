@@ -1,4 +1,8 @@
 {
   "height": 200,
-  "width": 100
-}
+  "width": 100,
+  "repair-time":  4,
+    "reload-time": 5,
+  "shield-strength": 3,
+  "shots": 3
+  }

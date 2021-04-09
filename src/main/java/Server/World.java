@@ -14,6 +14,8 @@ public class World {
     Hashtable<String,Robot> allRobots = new Hashtable<>();
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
+    public JsonObject fileObject;
+
 
     int worldWidth;
     int worldHeight;
@@ -22,7 +24,7 @@ public class World {
         try {
             File input = new File("src/main/java/WorldSpecs.json");
             JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
-            JsonObject fileObject = fileElement.getAsJsonObject();
+            this.fileObject = fileElement.getAsJsonObject();
 
             //Extracting basic fields
 

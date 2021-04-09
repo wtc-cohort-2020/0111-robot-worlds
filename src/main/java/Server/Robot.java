@@ -13,6 +13,7 @@ public class Robot {
     private final int shotDistance;
     private int numberShots = 0;
     private Random random = new Random();
+    private int shieldStrength;
 
     public Robot(String name, World world){
         this.x = 0;
@@ -21,9 +22,10 @@ public class Robot {
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
+        this.shieldStrength = world.fileObject.get("shield-strength").getAsInt();
 
-        numberShots = random.nextInt(6);
-        shotDistance =  6 - numberShots;
+        this.numberShots = world.fileObject.get("shots").getAsInt();
+        this.shotDistance =  6 - numberShots;
     }
 
     public MovementStatus moveForward(){
@@ -192,7 +194,8 @@ public class Robot {
 
     public void reload() {
         try {
-            TimeUnit.SECONDS.sleep(5);
+            //wait reload time then reload.
+            TimeUnit.SECONDS.sleep(world.fileObject.get("reload-time").getAsInt());
             numberShots = 6 - shotDistance;
         }
 
@@ -205,7 +208,22 @@ public class Robot {
     public void beenHit () {
         // if robot in line of another robot's fire
 
-        //
+        //decrease shield by 1 point
+        shieldStrength--;
+    }
+
+    public void repair () {
+        try {
+            //wait repair-time
+            TimeUnit.SECONDS.sleep(world.fileObject.get("repair-time").getAsInt());
+            // increase shield to max.
+            shieldStrength = world.fileObject.get("shield-strength").getAsInt();
+        }
+
+
+        catch (InterruptedException e) {
+            System.out.println("Timeout occurred.");
+        }
     }
 
     public int getX() {
