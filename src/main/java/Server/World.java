@@ -22,7 +22,7 @@ public class World {
 
     public World(){
         try {
-            File input = new File("src/main/java/WorldSpecs.json");
+            File input = new File("src/main/java/Server/WorldSpecs.json");
             JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
             this.fileObject = fileElement.getAsJsonObject();
 
