@@ -19,14 +19,18 @@ public class World {
     int worldHeight;
 
     public World(){
-        File input = new File("src/main/java/WorldSpecs.json");
-        JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
-        JsonObject fileObject = fileElement.getAsJsonObject();
+        try {
+            File input = new File("src/main/java/WorldSpecs.json");
+            JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
+            JsonObject fileObject = fileElement.getAsJsonObject();
 
-        //Extracting basic fields
+            //Extracting basic fields
 
-        worldHeight = fileObject.get("height").getAsInt();
-        worldWidth = fileObject.get("height").getAsInt();
+            worldHeight = fileObject.get("height").getAsInt();
+            worldWidth = fileObject.get("height").getAsInt();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         CreateObstacles();
         CreatePits();
     }
