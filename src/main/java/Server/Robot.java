@@ -203,7 +203,9 @@ public class Robot {
     }
 
     public void beenHit () {
+        // if robot in line of another robot's fire
 
+        //
     }
 
     public int getX() {
