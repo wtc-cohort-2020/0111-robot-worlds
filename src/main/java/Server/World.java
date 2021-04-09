@@ -1,5 +1,11 @@
 package Server;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
@@ -13,8 +19,14 @@ public class World {
     int worldHeight;
 
     public World(){
-        worldHeight = 200;
-        worldWidth = 200;
+        File input = new File("src/main/java/WorldSpecs.json");
+        JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
+        JsonObject fileObject = fileElement.getAsJsonObject();
+
+        //Extracting basic fields
+
+        worldHeight = fileObject.get("height").getAsInt();
+        worldWidth = fileObject.get("height").getAsInt();
         CreateObstacles();
         CreatePits();
     }
