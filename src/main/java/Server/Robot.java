@@ -193,6 +193,7 @@ public class Robot {
     }
 
     public void reload() {
+        this.status = RobotStatus.RELOADING;
         try {
             //wait reload time then reload.
             TimeUnit.SECONDS.sleep(world.fileObject.get("reload-time").getAsInt());
@@ -213,6 +214,7 @@ public class Robot {
     }
 
     public void repair () {
+        this.status = RobotStatus.REPAIRING;
         try {
             //wait repair-time
             TimeUnit.SECONDS.sleep(world.fileObject.get("repair-time").getAsInt());
