@@ -25,7 +25,7 @@ public class Robot {
         this.shieldStrength = world.fileObject.get("shield-strength").getAsInt();
 
         this.numberShots = world.fileObject.get("shots").getAsInt();
-        this.shotDistance =  6 - numberShots;
+        this.shotDistance =  world.fileObject.get("shot-distance").getAsInt();
     }
 
     public MovementStatus moveForward(){
@@ -208,9 +208,34 @@ public class Robot {
 
     public void beenHit () {
         // if robot in line of another robot's fire
-
+        //look at all robots in list
+        if this.currentDirection == Direction.NORTH
+        for(Robot robot: Robot_list) {
+            if (this.x == robot.x && robot.y > this.y &&
+                    (robot.y <= this.y + shotDistance))
+        }
         //decrease shield by 1 point
         shieldStrength--;
+
+        if this.currentDirection == Direction.EAST
+        for(Robot robot: Robot_list) {
+            if (this.y == robot.y && robot.x > this.x &&
+                    robot.x <= this.x + world.fileObject.get("standard-robot").get("shot-distance").getAsInt());
+        }
+
+        if this.currentDirection == Direction.SOUTH
+        for(Robot robot: Robot_list) {
+            if (this.x == robot.x && robot.y > this.y &&
+                    robot.y <= this.y + shotDistance)
+        }
+
+        if this.currentDirection == Direction.WEST
+        for(Robot robot: Robot_list) {
+            if (this.y == robot.y && robot.x < this.x &&
+                    robot.x >= this.x + shotDistance)
+        }
+
+
     }
 
     public void repair () {
