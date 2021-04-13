@@ -3,6 +3,7 @@ package Server;
 import com.google.gson.*;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RobotCommand {
     private Robot robot;
@@ -37,16 +38,16 @@ public class RobotCommand {
                 }
                 for(Robot robot: world.getRobots()) {
 
-                    if (list.get(0).equals("name")) {
+                    if (list.get(0).equals(robot.getName())) {
                         // send a response saying request was invalid.
                         server.sendResponse(response.InvalidArguments());
                     }
 
                 }
 
-                if (list.get(1).equalsIgnoreCase("sniper") &&
-                        list.get(1).equalsIgnoreCase("standard") &&
-                        list.get(1).equalsIgnoreCase("pistol")) {
+                if (list.get(1).trim().equalsIgnoreCase("sniper") &&
+                        list.get(1).trim().equalsIgnoreCase("standard") &&
+                        list.get(1).trim().equalsIgnoreCase("pistol")) {
                     //send response saying request was invalid.
                     server.sendResponse(response.InvalidArguments());
                 }
@@ -55,7 +56,7 @@ public class RobotCommand {
 
                 if(!isInWorld){
                     isInWorld = true;
-                    robot = new Robot(newCommand.get("robot").getAsString(), world);
+                    robot = new Robot(newCommand.get("robot").getAsString(), world, list.get(1).trim().toLowerCase());
                     server.sendResponse(response.LaunchSuccess(
                             robot.getX(), robot.getY(), robot.getCurrentDirection()));
                 }

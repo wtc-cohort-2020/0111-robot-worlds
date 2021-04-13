@@ -52,14 +52,14 @@ public class World {
         //Sets config details based on robot type.
 
         sniperRobot = new HashMap<>();
-        sniperRobot.put("shot-distance",5);
-        sniperRobot.put("shots",1);
+        sniperRobot.put("shot-distance",4);
+        sniperRobot.put("shots",2);
         sniperRobot.put("shield-strength",3);
 
 
         pistolRobot = new HashMap<>();
-        pistolRobot.put("shot-distance",1);
-        pistolRobot.put("shots",5);
+        pistolRobot.put("shot-distance",2);
+        pistolRobot.put("shots",4);
         pistolRobot.put("shield-strength",3);
 
 

@@ -22,7 +22,7 @@ public class Robot {
     private final Integer REPAIR_TIME = 4;
 
 
-    public Robot(String name, World world){
+    public Robot(String name, World world, String type){
         this.x = 0;
         this.y = 0;
         this.name = name;
@@ -31,9 +31,12 @@ public class Robot {
         this.world = world;
         world.AddRobot(this);
 
-        this.shieldStrength = world.getSniper().get("shield-strength");
-        this.numberShots = world.getSniper().get("shots");
-        this.shotDistance =  world.getSniper().get("shot-distance");
+
+            this.shieldStrength = world.getSniper().get("shield-strength");
+            this.numberShots = world.getSniper().get("shots");
+            shotDistance= 6 - numberShots;
+
+
     }
 
     public MovementStatus moveForward(){
@@ -246,7 +249,7 @@ public class Robot {
         }
 
 
-
+        // if shield-strength equals 0, robot is dead.
     }
 
     public void repair () {
@@ -282,5 +285,9 @@ public class Robot {
 
     public void setStatus(RobotStatus status) {
         this.status = status;
+    }
+
+    public String getName () {
+        return name;
     }
 }
