@@ -14,27 +14,18 @@ public class MultiServers {
         for(Obstacle obstacle: world.getObstacles()){
             System.out.println("("+obstacle.getBottomLeftX()+","+obstacle.getBottomLeftY()+")");
         }
-        System.out.println("\nPits\n");
+        System.out.println("\nPits");
         for(Pit pit: world.getPits()){
             System.out.println("("+pit.getBottomLeftX()+","+pit.getBottomLeftY()+")");
         }
 
+        Runnable r = new AcceptClients(world);
+        Thread task = new Thread(r);
+        task.start();
 
-        ServerSocket s = new ServerSocket( Server.PORT);
-        System.out.println("Server.Server running & waiting for client connections.");
+        WorldCommands worldCommands = new WorldCommands(world);
+        worldCommands.runCommands();
 
-
-        while(true) {
-            try {
-                Socket socket = s.accept();
-                System.out.println("Connection: " + socket);
-
-                Runnable r = new Server(socket, world);
-                Thread task = new Thread(r);
-                task.start();
-            } catch(IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+        System.exit(0);
     }
 }

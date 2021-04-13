@@ -2,45 +2,97 @@ package Server;
 
 import com.google.gson.JsonObject;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class WorldCommands{
     static String command;
-    static String[] arguments = new String[2];
+    static String argument;
+    Scanner scanner;
+    String input;
+    World world;
 
-    public WorldCommands() {
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        while (true){
+    public WorldCommands(World world) {
+        scanner = new Scanner(System.in);
+        this.world = world;
+    }
+
+    public void runCommands(){
+        boolean flag = true;
+        while (flag){
+            System.out.println("What is your bidding master?");
             input = scanner.nextLine();
-            if(input.equalsIgnoreCase("quit")){
-                break;
-            }
+            splitCommand(input);
+            switch (command.toLowerCase(Locale.ROOT)){
+                case "off", "quit", "exit" ->{
+                    flag = false;
+                }
 
-            System.out.println(input);
+                case "robots" ->{
+                    for(Robot robot: world.getAllRobots()){
+                        System.out.println("\n" + robot.getName() +", state:");
+                        System.out.println("   Position: [" + robot.getX() +
+                                ", " + robot.getY() + "]");
+                        System.out.println("   Direction: " + robot.getCurrentDirection());
+                        System.out.println("   Shields: ");
+                        System.out.println("   Shots: ");
+                        System.out.println("   Status: " + robot.getStatus());
+                    }
+                }
+
+                case "dump" ->{
+                    System.out.println("\nObstacles");
+                    for(Obstacle obstacle: world.getObstacles()){
+                        System.out.println("("+obstacle.getBottomLeftX()+","+obstacle.getBottomLeftY()+")");
+                    }
+                    System.out.println("\nPits");
+                    for(Pit pit: world.getPits()){
+                        System.out.println("("+pit.getBottomLeftX()+","+pit.getBottomLeftY()+")");
+                    }
+                    for(Robot robot: world.getAllRobots()){
+                        System.out.println("\n" + robot.getName() +", state:");
+                        System.out.println("   Position: [" + robot.getX() +
+                                ", " + robot.getY() + "]");
+                        System.out.println("   Direction: " + robot.getCurrentDirection());
+                        System.out.println("   Shields: ");
+                        System.out.println("   Shots: ");
+                        System.out.println("   Status: " + robot.getStatus());
+                    }
+                }
+
+                case "purge" ->{
+                    boolean purgedRobot = false;
+                    for(Robot robot: world.getAllRobots()){
+                        if(robot.getName().equals(argument)){
+                            robot.setStatus(RobotStatus.DEAD);
+                            world.RemoveRobot(robot);
+                            purgedRobot = true;
+                            break;
+                        }
+                    }
+                    if(purgedRobot){
+                        System.out.println("Master, I have destroyed this robot: " + argument);
+                    }
+                    else {
+                        System.out.println("Master, I cannot find this robot: " + argument);
+                    }
+                }
+
+                default -> {
+                    System.out.println("Master, I did not understand this request: " + input);
+                }
+            }
         }
     }
 
     public static void splitCommand(String input) {
         String [] commandAndArgs = input.split(" ");
 
-        switch(commandAndArgs.length) {
-            case 1:
-                command = commandAndArgs[0];
-                return;
-
-            case 2:
-
-                command = commandAndArgs[0];
-                arguments[0] = commandAndArgs[1];
-                return;
-
-
-            case 3:
-                command = commandAndArgs[0];
-                arguments[0] = commandAndArgs[1];
-                arguments[1] = commandAndArgs[2];
-                return;
+        if (commandAndArgs.length == 2) {
+            command = commandAndArgs[0];
+            argument = commandAndArgs[1];
+        } else {
+            command = commandAndArgs[0];
         }
     }
 }

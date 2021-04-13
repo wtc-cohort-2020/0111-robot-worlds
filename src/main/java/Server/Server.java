@@ -45,8 +45,8 @@ public class Server implements Runnable {
     }
 
     private void closeQuietly() {
-        if(world.allRobots.contains(robot)){
-            world.allRobots.remove(robot.getName());
+        if(world.getAllRobots().contains(robot)){
+            world.RemoveRobot(robot);
         }
         try { in.close(); out.close();
         } catch(IOException ignored) {}

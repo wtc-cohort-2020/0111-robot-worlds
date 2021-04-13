@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class World {
-    ArrayList<Robot> allRobots = new ArrayList<>();
-    ArrayList<Obstacle> obstacles = new ArrayList<>();
-    ArrayList<Pit> pits = new ArrayList<>();
+    private ArrayList<Robot> allRobots = new ArrayList<>();
+    private ArrayList<Obstacle> obstacles = new ArrayList<>();
+    private ArrayList<Pit> pits = new ArrayList<>();
 
 
     int worldWidth;
@@ -93,5 +93,9 @@ public class World {
 
     public ArrayList<Pit> getPits(){
         return pits;
+    }
+
+    public ArrayList<Robot> getAllRobots(){
+        return allRobots;
     }
 }
