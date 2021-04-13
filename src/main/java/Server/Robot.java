@@ -1,5 +1,9 @@
 package Server;
 
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -10,10 +14,13 @@ public class Robot {
     private RobotStatus status;
     private Direction currentDirection;
     private final World world;
-    private final int shotDistance;
-    private int numberShots = 0;
+    private final Integer shotDistance;
+    private Integer numberShots;
     private Random random = new Random();
     private int shieldStrength;
+    private final Integer RELOAD_TIME = 5;
+    private final Integer REPAIR_TIME = 4;
+
 
     public Robot(String name, World world){
         this.x = 0;
@@ -22,10 +29,11 @@ public class Robot {
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
-        this.shieldStrength = world.fileObject.get("shield-strength").getAsInt();
 
-        this.numberShots = world.fileObject.get("shots").getAsInt();
-        this.shotDistance =  world.fileObject.get("shot-distance").getAsInt();
+
+        this.shieldStrength = world.getSniper().get("shield-strength");
+        this.numberShots = world.getSniper().get("shots");
+        this.shotDistance =  world.getSniper().get("shot-distance");
     }
 
     public MovementStatus moveForward(){
@@ -196,7 +204,7 @@ public class Robot {
         this.status = RobotStatus.RELOADING;
         try {
             //wait reload time then reload.
-            TimeUnit.SECONDS.sleep(world.fileObject.get("reload-time").getAsInt());
+            TimeUnit.SECONDS.sleep(RELOAD_TIME);
             numberShots = 6 - shotDistance;
         }
 
@@ -209,31 +217,49 @@ public class Robot {
     public void beenHit () {
         // if robot in line of another robot's fire
         //look at all robots in list
-        if this.currentDirection == Direction.NORTH
-        for(Robot robot: Robot_list) {
-            if (this.x == robot.x && robot.y > this.y &&
-                    (robot.y <= this.y + shotDistance))
-        }
-        //decrease shield by 1 point
-        shieldStrength--;
-
-        if this.currentDirection == Direction.EAST
-        for(Robot robot: Robot_list) {
-            if (this.y == robot.y && robot.x > this.x &&
-                    robot.x <= this.x + world.fileObject.get("standard-robot").get("shot-distance").getAsInt());
+        if (this.currentDirection == Direction.NORTH) {
+            for(Robot robot: Robot_list) {
+                if (this.x == robot.x && robot.y > this.y &&
+                        (robot.y <= this.y + shotDistance)) {
+                    //decrease shield by 1 point
+                    shieldStrength--;
+                }
+            }
         }
 
-        if this.currentDirection == Direction.SOUTH
-        for(Robot robot: Robot_list) {
-            if (this.x == robot.x && robot.y > this.y &&
-                    robot.y <= this.y + shotDistance)
+
+        if (this.currentDirection == Direction.EAST) {
+            for(Robot robot: Robot_list) {
+                if (this.y == robot.y && robot.x > this.x &&
+                        robot.x <= this.x + shotDistance) {
+                    //decrease shield by 1 point
+                    robot.shieldStrength--;
+                };
+            }
         }
 
-        if this.currentDirection == Direction.WEST
-        for(Robot robot: Robot_list) {
-            if (this.y == robot.y && robot.x < this.x &&
-                    robot.x >= this.x + shotDistance)
+
+        if (this.currentDirection == Direction.SOUTH) {
+            for(Robot robot: Robot_list) {
+                if (this.x == robot.x && robot.y > this.y &&
+                        robot.y <= this.y + shotDistance) {
+                    //decrease shield by 1 point
+                    robot.shieldStrength--;
+                }
+            }
         }
+
+
+        if (this.currentDirection == Direction.WEST) {
+            for(Robot robot: Robot_list) {
+                if (this.y == robot.y && robot.x < this.x &&
+                        robot.x >= this.x + shotDistance) {
+                    //decrease shield by 1 point
+                    robot.shieldStrength--;
+                }
+            }
+        }
+
 
 
     }
@@ -242,9 +268,9 @@ public class Robot {
         this.status = RobotStatus.REPAIRING;
         try {
             //wait repair-time
-            TimeUnit.SECONDS.sleep(world.fileObject.get("repair-time").getAsInt());
+            TimeUnit.SECONDS.sleep(REPAIR_TIME);
             // increase shield to max.
-            shieldStrength = world.fileObject.get("shield-strength").getAsInt();
+            shieldStrength = 3;
         }
 
 

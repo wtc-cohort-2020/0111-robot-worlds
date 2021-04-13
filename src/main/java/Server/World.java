@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,11 +15,15 @@ public class World {
     Hashtable<String,Robot> allRobots = new Hashtable<>();
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
-    public JsonObject fileObject;
+    private JsonObject fileObject;
 
 
     int worldWidth;
     int worldHeight;
+
+    HashMap<String, Integer> sniperRobot;
+    HashMap<String, Integer> pistolRobot;
+    HashMap<String, Integer> standardRobot;
 
     public World(){
         try {
@@ -35,12 +40,35 @@ public class World {
         }
         CreateObstacles();
         CreatePits();
+        setRobotParams();
     }
 
     public World(ArrayList<Pit> pits,ArrayList<Obstacle> obstacles){
         this.pits = pits;
         this.obstacles = obstacles;
     }
+
+    public void setRobotParams() {
+        //Sets config details based on robot type.
+
+        sniperRobot = new HashMap<>();
+        sniperRobot.put("shot-distance",5);
+        sniperRobot.put("shots",1);
+        sniperRobot.put("shield-strength",3);
+
+
+        pistolRobot = new HashMap<>();
+        pistolRobot.put("shot-distance",1);
+        pistolRobot.put("shots",5);
+        pistolRobot.put("shield-strength",3);
+
+
+        standardRobot = new HashMap<>();
+        standardRobot.put("shot-distance",3);
+        standardRobot.put("shots",3);
+        standardRobot.put("shield-strength",3);
+    }
+
 
     public void AddRobot(Robot robot, String name){
         allRobots.put(name, robot);
@@ -109,5 +137,21 @@ public class World {
 
     public ArrayList<Pit> getPits(){
         return pits;
+    }
+
+    public JsonObject getFileObject () {
+        return fileObject;
+    }
+
+    public HashMap<String, Integer> getSniper() {
+        return sniperRobot;
+    }
+
+    public HashMap<String, Integer> getStandard() {
+        return standardRobot;
+    }
+
+    public HashMap<String, Integer> getPistol() {
+        return pistolRobot;
     }
 }
