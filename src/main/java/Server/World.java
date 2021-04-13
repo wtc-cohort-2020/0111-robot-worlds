@@ -12,7 +12,7 @@ import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class World {
-    Hashtable<String,Robot> allRobots = new Hashtable<>();
+    ArrayList<Robot> allRobots = new ArrayList<>();
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
     private JsonObject fileObject;
