@@ -29,7 +29,7 @@ public class Robot {
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
-
+        world.AddRobot(this);
 
         this.shieldStrength = world.getSniper().get("shield-strength");
         this.numberShots = world.getSniper().get("shots");

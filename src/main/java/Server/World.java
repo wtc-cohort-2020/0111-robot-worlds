@@ -154,4 +154,8 @@ public class World {
     public HashMap<String, Integer> getPistol() {
         return pistolRobot;
     }
+
+    public void AddRobot(Robot robot){
+        allRobots.add(robot);
+    }
 }
