@@ -18,8 +18,12 @@ public class MultiServers {
         for(Pit pit: world.getPits()){
             System.out.println("("+pit.getBottomLeftX()+","+pit.getBottomLeftY()+")");
         }
+
+
         ServerSocket s = new ServerSocket( Server.PORT);
         System.out.println("Server.Server running & waiting for client connections.");
+
+
         while(true) {
             try {
                 Socket socket = s.accept();

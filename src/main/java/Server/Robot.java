@@ -3,7 +3,7 @@ package Server;
 public class Robot {
     private int x;
     private int y;
-    private String name;
+    private final String name;
     private RobotStatus status;
     private Direction currentDirection;
     private final World world;
@@ -15,6 +15,7 @@ public class Robot {
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
+        world.AddRobot(this);
     }
 
     public MovementStatus moveForward(){
@@ -170,5 +171,9 @@ public class Robot {
 
     public void setStatus(RobotStatus status) {
         this.status = status;
+    }
+
+    public String getName(){
+        return name;
     }
 }

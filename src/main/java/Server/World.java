@@ -2,12 +2,14 @@ package Server;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class World {
-    Hashtable<String,Robot> allRobots = new Hashtable<>();
+    ArrayList<Robot> allRobots = new ArrayList<>();
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
+
 
     int worldWidth;
     int worldHeight;
@@ -24,12 +26,12 @@ public class World {
         this.obstacles = obstacles;
     }
 
-    public void AddRobot(Robot robot, String name){
-        allRobots.put(name, robot);
+    public void AddRobot(Robot robot){
+        allRobots.add(robot);
     }
 
-    public void RemoveRobot(String name){
-        allRobots.remove(name);
+    public void RemoveRobot(Robot robot){
+        allRobots.remove(robot);
     }
 
     private void CreateObstacles(){

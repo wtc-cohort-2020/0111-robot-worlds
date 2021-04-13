@@ -14,7 +14,7 @@ public class Server implements Runnable {
     private final String clientMachine;
     private Robot robot;
     private RobotCommand command;
-    private World world;
+    private final World world;
 
     public Server(Socket socket, World world) throws IOException {
         this.world = world;
@@ -33,9 +33,6 @@ public class Server implements Runnable {
             JsonObject jsonMessage;
             command = new RobotCommand(robot, this, world);
             while((messageFromClient = in.readLine()) != null) {
-                if(messageFromClient.equals("exit")){
-                    break;
-                }
                 System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                 jsonMessage = new JsonParser().parse(messageFromClient).getAsJsonObject();
                 command.NewCommand(jsonMessage);
@@ -48,6 +45,9 @@ public class Server implements Runnable {
     }
 
     private void closeQuietly() {
+        if(world.allRobots.contains(robot)){
+            world.allRobots.remove(robot.getName());
+        }
         try { in.close(); out.close();
         } catch(IOException ignored) {}
     }
