@@ -40,6 +40,8 @@ public class Server implements Runnable {
                 jsonMessage = new JsonParser().parse(messageFromClient).getAsJsonObject();
                 command.NewCommand(jsonMessage);
             }
+
+
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
         } finally {

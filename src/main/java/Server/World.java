@@ -70,9 +70,7 @@ public class World {
     }
 
 
-    public void AddRobot(Robot robot, String name){
-        allRobots.put(name, robot);
-    }
+
 
     public void RemoveRobot(String name){
         allRobots.remove(name);

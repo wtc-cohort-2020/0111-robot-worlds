@@ -2,6 +2,8 @@ package Server;
 
 import com.google.gson.*;
 
+import java.util.ArrayList;
+
 public class RobotCommand {
     private Robot robot;
     private boolean isInWorld = false;
@@ -19,6 +21,38 @@ public class RobotCommand {
     public void NewCommand(JsonObject newCommand){
         switch (newCommand.get("command").getAsString()) {
             case "launch" -> {
+                /*
+                A try catch block for checking that launch <make> <name> structure
+                is followed, as well that make is a valid make and robot
+                 with <name> does not already exist.
+                 */
+                JsonArray arguments = newCommand.getAsJsonArray("arguments");
+                ArrayList<String> list = new ArrayList<String>();
+
+                if (arguments != null) {
+                    int len = newCommand.getAsJsonArray("arguments").size();
+                    for (int i=0;i<len;i++){
+                        list.add(arguments.get(i).toString());
+                    }
+                }
+                for(Robot robot: world.getRobots()) {
+
+                    if (list.get(0).equals("name")) {
+                        // send a response saying request was invalid.
+                        server.sendResponse(response.InvalidArguments());
+                    }
+
+                }
+
+                if (list.get(1).equalsIgnoreCase("sniper") &&
+                        list.get(1).equalsIgnoreCase("standard") &&
+                        list.get(1).equalsIgnoreCase("pistol")) {
+                    //send response saying request was invalid.
+                    server.sendResponse(response.InvalidArguments());
+                }
+
+
+
                 if(!isInWorld){
                     isInWorld = true;
                     robot = new Robot(newCommand.get("robot").getAsString(), world);
@@ -107,6 +141,7 @@ public class RobotCommand {
                 }
                 server.sendResponse(response.Look());
             }
+
             default -> {
                 if(robot.getStatus()== RobotStatus.DEAD){
                     server.sendResponse(response.MovementIntoPit());
