@@ -178,27 +178,12 @@ public class Robot {
             System.out.println("You need to reload!");
             return;
         }
-        /*
-        Within current direction, check if another robot in current x/y +/-
-        shotDistance.
-         */
-        if (currentDirection == Direction.NORTH) {
-            // if another robot in current y + shotDistance
-        }
-        if (currentDirection == Direction.EAST) {
-            // if another robot in current x + shotDistance
-        }
-        if (currentDirection == Direction.SOUTH) {
-            // if another robot in current y - shotDistance
-        }
-        if (currentDirection == Direction.WEST) {
-            // if another robot in current x - shotDistance
-        }
-
         //Decrease number shots by 1.
+        beenHit();
         numberShots -= 1;
-
     }
+
+
 
     public void reload() {
         this.status = RobotStatus.RELOADING;
@@ -218,21 +203,21 @@ public class Robot {
         // if robot in line of another robot's fire
         //look at all robots in list
         if (this.currentDirection == Direction.NORTH) {
-            for(Robot robot: Robot_list) {
+            for(Robot robot: world.getRobots()) {
                 if (this.x == robot.x && robot.y > this.y &&
                         (robot.y <= this.y + shotDistance)) {
-                    //decrease shield by 1 point
-                    shieldStrength--;
+                    //decrease shield of wounded robot by 1 point
+                    robot.shieldStrength--;
                 }
             }
         }
 
 
         if (this.currentDirection == Direction.EAST) {
-            for(Robot robot: Robot_list) {
+            for(Robot robot: world.getRobots()) {
                 if (this.y == robot.y && robot.x > this.x &&
                         robot.x <= this.x + shotDistance) {
-                    //decrease shield by 1 point
+                    //decrease shield of wounded robot by 1 point
                     robot.shieldStrength--;
                 };
             }
@@ -240,10 +225,10 @@ public class Robot {
 
 
         if (this.currentDirection == Direction.SOUTH) {
-            for(Robot robot: Robot_list) {
+            for(Robot robot: world.getRobots()) {
                 if (this.x == robot.x && robot.y > this.y &&
                         robot.y <= this.y + shotDistance) {
-                    //decrease shield by 1 point
+                    //decrease shield of wounded robot by 1 point
                     robot.shieldStrength--;
                 }
             }
@@ -251,10 +236,10 @@ public class Robot {
 
 
         if (this.currentDirection == Direction.WEST) {
-            for(Robot robot: Robot_list) {
+            for(Robot robot: world.getRobots()) {
                 if (this.y == robot.y && robot.x < this.x &&
                         robot.x >= this.x + shotDistance) {
-                    //decrease shield by 1 point
+                    //decrease shield of wounded robot by 1 point
                     robot.shieldStrength--;
                 }
             }

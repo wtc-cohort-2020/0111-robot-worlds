@@ -139,9 +139,7 @@ public class World {
         return pits;
     }
 
-    public JsonObject getFileObject () {
-        return fileObject;
-    }
+    public ArrayList<Robot> getRobots() { return allRobots; }
 
     public HashMap<String, Integer> getSniper() {
         return sniperRobot;
