@@ -225,7 +225,7 @@ public class Robot {
             for(Robot robot: world.getRobots()) {
                 for (int i = 1; i <= shotDistance; i++) {
                     if (this.y == robot.y && robot.x > this.x &&
-                            robot.x <= this.x + shotDistance) {
+                            robot.x == (this.x + i)) {
                         //decrease shield of wounded robot by 1 point
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
@@ -244,8 +244,8 @@ public class Robot {
         if (this.currentDirection == Direction.SOUTH) {
             for(Robot robot: world.getRobots()) {
                 for (int i = 1; i <= shotDistance; i++) {
-                    if (this.x == robot.x && robot.y > this.y &&
-                            robot.y <= this.y + shotDistance) {
+                    if (this.x == robot.x && robot.y < this.y &&
+                            (robot.y + i) == this.y) {
                         //decrease shield of wounded robot by 1 point
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
@@ -265,7 +265,7 @@ public class Robot {
             for(Robot robot: world.getRobots()) {
                 for (int i = 1; i <= shotDistance; i++) {
                     if (this.y == robot.y && robot.x < this.x &&
-                            robot.x >= this.x + shotDistance) {
+                            (robot.x+i) == this.x) {
                         //decrease shield of wounded robot by 1 point
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
