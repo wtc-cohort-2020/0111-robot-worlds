@@ -17,7 +17,7 @@ public class Robot {
     private final Integer shotDistance;
     private Integer numberShots;
     private Random random = new Random();
-    private int shieldStrength;
+    private int shields = 3;
     private final Integer RELOAD_TIME = 5;
     private final Integer REPAIR_TIME = 4;
 
@@ -32,7 +32,7 @@ public class Robot {
         world.AddRobot(this);
 
 
-            this.shieldStrength = world.getSniper().get("shield-strength");
+            this.shields = world.getSniper().get("shield-strength");
             this.numberShots = world.getSniper().get("shots");
             shotDistance= 6 - numberShots;
 
@@ -174,17 +174,7 @@ public class Robot {
         }
     }
 
-    // nmeintje code
-    public void fire() {
 
-        if (numberShots == 0) {
-            System.out.println("You need to reload!");
-            return;
-        }
-        //Decrease number shots by 1.
-        beenHit();
-        numberShots -= 1;
-    }
 
 
 
@@ -202,54 +192,75 @@ public class Robot {
         }
     }
 
-    public void beenHit () {
-        // if robot in line of another robot's fire
-        //look at all robots in list
+    public boolean beenHit () {
+        //Decrease shots by 1
+        numberShots -= 1;
+
+        // For all robots
+        //Look for the closest robot in the line of fire
         if (this.currentDirection == Direction.NORTH) {
             for(Robot robot: world.getRobots()) {
-                if (this.x == robot.x && robot.y > this.y &&
-                        (robot.y <= this.y + shotDistance)) {
-                    //decrease shield of wounded robot by 1 point
-                    robot.shieldStrength--;
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.x == robot.x && robot.y > this.y &&
+                            (robot.y <= this.y + i)) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.shields--;
+                        return true;
+                    }
                 }
+
             }
+
         }
 
 
         if (this.currentDirection == Direction.EAST) {
             for(Robot robot: world.getRobots()) {
-                if (this.y == robot.y && robot.x > this.x &&
-                        robot.x <= this.x + shotDistance) {
-                    //decrease shield of wounded robot by 1 point
-                    robot.shieldStrength--;
-                };
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.y == robot.y && robot.x > this.x &&
+                            robot.x <= this.x + shotDistance) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.shields--;
+                        return true;
+                    };
+                }
+
             }
         }
 
 
         if (this.currentDirection == Direction.SOUTH) {
             for(Robot robot: world.getRobots()) {
-                if (this.x == robot.x && robot.y > this.y &&
-                        robot.y <= this.y + shotDistance) {
-                    //decrease shield of wounded robot by 1 point
-                    robot.shieldStrength--;
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.x == robot.x && robot.y > this.y &&
+                            robot.y <= this.y + shotDistance) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.shields--;
+                        return true;
+                    }
                 }
+
             }
         }
 
 
         if (this.currentDirection == Direction.WEST) {
             for(Robot robot: world.getRobots()) {
-                if (this.y == robot.y && robot.x < this.x &&
-                        robot.x >= this.x + shotDistance) {
-                    //decrease shield of wounded robot by 1 point
-                    robot.shieldStrength--;
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.y == robot.y && robot.x < this.x &&
+                            robot.x >= this.x + shotDistance) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.shields--;
+                        return true;
+                    }
                 }
+
             }
         }
 
-
+        return false;
         // if shield-strength equals 0, robot is dead.
+
     }
 
     public void repair () {
@@ -289,5 +300,9 @@ public class Robot {
 
     public String getName () {
         return name;
+    }
+
+    public int getNumberShots() {
+        return numberShots;
     }
 }

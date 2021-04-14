@@ -143,6 +143,70 @@ public class RobotCommand {
                 server.sendResponse(response.Look());
             }
 
+            case "fire" -> {
+                if (robot.getNumberShots() == 0) {
+                    System.out.println("You need to reload!");
+                    break;
+                }
+
+                boolean beenHit = robot.beenHit();
+
+                if(robot.getStatus()== RobotStatus.DEAD){
+                    server.sendResponse(response.MovementIntoPit());
+                    break;
+                }
+                if(newCommand.get("arguments").getAsString().equals("")
+                || newCommand.get("arguments").getAsString() == null){
+
+                    if (beenHit) {
+                        server.sendResponse(response.HitRobot(
+                                robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                    } else {
+                        server.sendResponse(response.MissedRobot(
+                                robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                    }
+                    }
+
+
+                else {
+                    server.sendResponse(response.InvalidArguments());
+                }
+            }
+
+            case "reload" -> {
+                if(robot.getStatus()== RobotStatus.DEAD){
+                    server.sendResponse(response.MovementIntoPit());
+                    break;
+                }
+                if(newCommand.get("arguments").getAsString().equals("")){
+                    robot.reload();
+//                    server.sendResponse(response.Reload(
+//                            robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                }
+
+                else {
+                    server.sendResponse(response.InvalidArguments());
+                }
+            }
+
+            case "repair" -> {
+                if (robot.getStatus() == RobotStatus.DEAD) {
+                    server.sendResponse(response.MovementIntoPit());
+                    break;
+                }
+                if (newCommand.get("arguments").getAsString().equals("")) {
+                    robot.repair();
+//                    server.sendResponse(response.Repair(
+//                            robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                }
+
+
+                else {
+                    server.sendResponse(response.InvalidArguments());
+                }
+            }
+
+
             default -> {
                 if(robot.getStatus()== RobotStatus.DEAD){
                     server.sendResponse(response.MovementIntoPit());

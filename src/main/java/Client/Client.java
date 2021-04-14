@@ -46,11 +46,12 @@ public class Client {
 //                System.out.println(command);
                 System.out.println(Arrays.toString(arguments));
 
-
+                Gson gson = new Gson();
 
                 myRobot.addProperty("name", name);
                 myRobot.addProperty("command", command);
-                myRobot.addProperty("arguments", String.valueOf(arguments));
+                String myArgs = gson.toJson(arguments);
+                myRobot.addProperty("arguments", myArgs);
 
 
                 out.println(myRobot.toString());
