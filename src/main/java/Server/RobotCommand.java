@@ -159,11 +159,12 @@ public class RobotCommand {
                 || newCommand.get("arguments").getAsString() == null){
 
                     if (beenHit) {
-                        server.sendResponse(response.HitRobot(
-                                robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                        //int shields, int injuredShots, String robotStatus, int shots
+                        server.sendResponse(
+                                response.HitRobot(robot.getDistance(), robot.getNumberShots(),
+                                        robot.returnHitRobot()));
                     } else {
-                        server.sendResponse(response.MissedRobot(
-                                robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                        server.sendResponse(response.MissedRobot(robot.getNumberShots()));
                     }
                     }
 

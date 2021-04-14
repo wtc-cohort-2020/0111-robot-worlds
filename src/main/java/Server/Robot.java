@@ -20,6 +20,8 @@ public class Robot {
     private int shields = 3;
     private final Integer RELOAD_TIME = 5;
     private final Integer REPAIR_TIME = 4;
+    private int distance;
+    private Robot hitRobot;
 
 
     public Robot(String name, World world, String type){
@@ -205,6 +207,8 @@ public class Robot {
                             (robot.y <= this.y + i)) {
                         //decrease shield of wounded robot by 1 point
                         robot.shields--;
+                        distance = i;
+                        hitRobot = robot;
                         return true;
                     }
                 }
@@ -221,6 +225,8 @@ public class Robot {
                             robot.x <= this.x + shotDistance) {
                         //decrease shield of wounded robot by 1 point
                         robot.shields--;
+                        distance = i;
+                        hitRobot = robot;
                         return true;
                     };
                 }
@@ -236,6 +242,8 @@ public class Robot {
                             robot.y <= this.y + shotDistance) {
                         //decrease shield of wounded robot by 1 point
                         robot.shields--;
+                        distance = i;
+                        hitRobot= robot;
                         return true;
                     }
                 }
@@ -251,6 +259,8 @@ public class Robot {
                             robot.x >= this.x + shotDistance) {
                         //decrease shield of wounded robot by 1 point
                         robot.shields--;
+                        distance = i;
+                        hitRobot = robot;
                         return true;
                     }
                 }
@@ -269,7 +279,7 @@ public class Robot {
             //wait repair-time
             TimeUnit.SECONDS.sleep(REPAIR_TIME);
             // increase shield to max.
-            shieldStrength = 3;
+            shields = 3;
         }
 
 
@@ -305,4 +315,18 @@ public class Robot {
     public int getNumberShots() {
         return numberShots;
     }
+
+    public int getShields() {
+        return shields;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public Robot returnHitRobot() {
+        return hitRobot;
+    }
+
+
 }
