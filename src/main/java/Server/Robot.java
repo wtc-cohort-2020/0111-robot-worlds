@@ -206,7 +206,10 @@ public class Robot {
                     if (this.x == robot.x && robot.y > this.y &&
                             (robot.y <= this.y + i)) {
                         //decrease shield of wounded robot by 1 point
-                        robot.shields--;
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
                         distance = i;
                         hitRobot = robot;
                         return true;
@@ -224,7 +227,10 @@ public class Robot {
                     if (this.y == robot.y && robot.x > this.x &&
                             robot.x <= this.x + shotDistance) {
                         //decrease shield of wounded robot by 1 point
-                        robot.shields--;
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
                         distance = i;
                         hitRobot = robot;
                         return true;
@@ -241,7 +247,10 @@ public class Robot {
                     if (this.x == robot.x && robot.y > this.y &&
                             robot.y <= this.y + shotDistance) {
                         //decrease shield of wounded robot by 1 point
-                        robot.shields--;
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
                         distance = i;
                         hitRobot= robot;
                         return true;
@@ -258,7 +267,10 @@ public class Robot {
                     if (this.y == robot.y && robot.x < this.x &&
                             robot.x >= this.x + shotDistance) {
                         //decrease shield of wounded robot by 1 point
-                        robot.shields--;
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
                         distance = i;
                         hitRobot = robot;
                         return true;
@@ -328,5 +340,12 @@ public class Robot {
         return hitRobot;
     }
 
+    public void decreaseShields() {
+        shields--;
+    }
+
+    public void increaseShields() {
+        shields++;
+    }
 
 }
