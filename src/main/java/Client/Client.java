@@ -27,12 +27,7 @@ public class Client {
         {
             Scanner scanner = new Scanner(System.in);
             String input;
-            JsonObject myRobot = new JsonObject();
-//            myRobot.addProperty("robot", "Gert");
-//            myRobot.addProperty("command", "launch");
-//            myRobot.addProperty("arguments", "");
-            out.println(myRobot.toString());
-            out.flush();
+
             String messageFromServer = in.readLine();
             System.out.println("Response: "+messageFromServer);
             while (true){
@@ -41,8 +36,8 @@ public class Client {
                     break;
                 }
 
-                myRobot = new JsonObject();
-                myRobot.addProperty("robot", "Gert");
+                JsonObject myRobot = new JsonObject();
+
 
                 splitCommand(input);
                 System.out.println(command);

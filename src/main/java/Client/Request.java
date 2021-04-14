@@ -5,31 +5,21 @@ import com.google.gson.JsonObject;
 import java.util.Arrays;
 
 public class Request {
-    public String moveForward(int x, String name) {
+    public String move(int x, String name, String[] arguments) {
         JsonObject finalResponse = new JsonObject();
-        int[] steps = new int[]{x};
-        JsonObject arguments = new JsonObject();
 
         finalResponse.addProperty("name",name);
+
         finalResponse.addProperty("command","forward");
-        finalResponse.addProperty("arguments", Arrays.toString(steps));
+        finalResponse.addProperty("arguments", Arrays.toString(arguments));
 
 
         return finalResponse.toString();
     }
 
-    public String moveBack(int x, String name) {
-        JsonObject finalResponse = new JsonObject();
-        int[] steps = new int[]{x};
-        JsonObject arguments = new JsonObject();
 
-        finalResponse.addProperty("name",name);
-        finalResponse.addProperty("command","back");
-        finalResponse.addProperty("arguments", Arrays.toString(steps));
 
-    }
-
-    public String attack(String name) {
+    public String fire(String name) {
         JsonObject finalResponse = new JsonObject();
         int[] nothing = new int[0];
 
@@ -104,12 +94,43 @@ public class Request {
         return finalResponse.toString();
     }
 
-    public String look() {
-        //
+    public String look(String name) {
+        JsonObject finalResponse = new JsonObject();
+        finalResponse.addProperty("name",name);
+        finalResponse.addProperty("command","look");
+        finalResponse.addProperty("arguments", Arrays.toString(new int[0]));
+
+        return finalResponse.toString();
     }
 
-    public String state() {
-        
+    public String state(String name) {
+        JsonObject finalResponse = new JsonObject();
+        finalResponse.addProperty("name",name);
+        finalResponse.addProperty("command","state");
+        finalResponse.addProperty("arguments", Arrays.toString(new int[0]));
+
+        return finalResponse.toString();
+    }
+
+    public String turn(String name, String[] arguments) {
+        JsonObject finalResponse = new JsonObject();
+
+        finalResponse.addProperty("name",name);
+        finalResponse.addProperty("command","turn");
+
+        finalResponse.addProperty("arguments", Arrays.toString(arguments));
+
+        return finalResponse.toString();
+    }
+
+    public String turn(String name, String command, String[] arguments) {
+        JsonObject finalResponse = new JsonObject();
+
+        finalResponse.addProperty("name",name);
+        finalResponse.addProperty("command",command);
+        finalResponse.addProperty("arguments", Arrays.toString(arguments));
+
+        return finalResponse.toString();
     }
 
 }
