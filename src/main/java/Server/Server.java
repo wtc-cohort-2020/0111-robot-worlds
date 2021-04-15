@@ -1,5 +1,6 @@
 package Server;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -34,7 +35,8 @@ public class Server implements Runnable {
             command = new RobotCommand(robot, this, world);
             while((messageFromClient = in.readLine()) != null) {
                 System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                jsonMessage = new JsonParser().parse(messageFromClient).getAsJsonObject();
+                jsonMessage  = JsonParser.parseString(messageFromClient).getAsJsonObject();
+//                jsonMessage = (messageFromClient).getAsJsonObject();
                 command.NewCommand(jsonMessage);
             }
         } catch(IOException ex) {

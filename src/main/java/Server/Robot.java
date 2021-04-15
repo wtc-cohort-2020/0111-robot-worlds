@@ -104,7 +104,7 @@ public class Robot {
         }
     }
 
-    private boolean obstacleAtPosition(int x, int y){
+    public boolean obstacleAtPosition(int x, int y){
         for(Obstacle obstacle: world.getObstacles()){
             if(obstacle.blocksPosition(x,y)){
                 return true;
@@ -113,7 +113,7 @@ public class Robot {
         return false;
     }
 
-    private boolean pitAtPosition(int x, int y){
+    public boolean pitAtPosition(int x, int y){
         for (Pit pit: world.getPits()){
             if(pit.blocksPosition(x,y)){
                 return true;

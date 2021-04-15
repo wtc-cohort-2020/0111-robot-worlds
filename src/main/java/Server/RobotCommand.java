@@ -2,6 +2,11 @@ package Server;
 
 import com.google.gson.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class RobotCommand {
     private Robot robot;
     private boolean isInWorld = false;
@@ -105,7 +110,163 @@ public class RobotCommand {
                     server.sendResponse(response.MovementIntoPit());
                     break;
                 }
-                server.sendResponse(response.Look());
+
+                int range = 10;
+                HashMap<String, Object> object = new HashMap<>();
+                List<HashMap<String, Object>> objects = new ArrayList<>();
+                boolean robotFound = false;
+                for (int i = 1; i <= range; i++) {
+                    if(robot.getY() + i == world.getWorldHeight()/2){
+                        object.put("direction", Direction.NORTH);
+                        object.put("type", ObjectTypes.EDGE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.pitAtPosition(robot.getX(), robot.getY() + i)){
+                        object.put("direction", Direction.NORTH);
+                        object.put("type", ObjectTypes.PIT);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.obstacleAtPosition(robot.getX(), robot.getY() + i)){
+                        object.put("direction", Direction.NORTH);
+                        object.put("type", ObjectTypes.OBSTACLE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    for (Robot otherRobot: world.getAllRobots()){
+                        if (otherRobot.getX() == robot.getX() && otherRobot.getY() == robot.getY() + i){
+                            object.put("direction", Direction.NORTH);
+                            object.put("type", ObjectTypes.ROBOT);
+                            object.put("distance", i);
+                            objects.add(object);
+                            robotFound = true;
+                            break;
+                        }
+                    }
+                    if(robotFound){
+                        break;
+                    }
+                }
+                object = new HashMap<>();
+                robotFound = false;
+                for (int i = 1; i <= range; i++) {
+                    if(robot.getY() - i == -world.getWorldHeight()/2){
+                        object.put("direction", Direction.SOUTH);
+                        object.put("type", ObjectTypes.EDGE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.pitAtPosition(robot.getX(), robot.getY() - i)){
+                        object.put("direction", Direction.SOUTH);
+                        object.put("type", ObjectTypes.PIT);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.obstacleAtPosition(robot.getX(), robot.getY() - i)){
+                        object.put("direction", Direction.SOUTH);
+                        object.put("type", ObjectTypes.OBSTACLE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    for (Robot otherRobot: world.getAllRobots()){
+                        if (otherRobot.getX() == robot.getX() && otherRobot.getY() == robot.getY() - i){
+                            object.put("direction", Direction.SOUTH);
+                            object.put("type", ObjectTypes.ROBOT);
+                            object.put("distance", i);
+                            objects.add(object);
+                            robotFound = true;
+                            break;
+                        }
+                    }
+                    if(robotFound){
+                        break;
+                    }
+                }
+                object = new HashMap<>();
+                robotFound = false;
+                for (int i = 1; i <= range; i++) {
+                    if(robot.getX() + i == world.getWorldWidth()/2){
+                        object.put("direction", Direction.EAST);
+                        object.put("type", ObjectTypes.EDGE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.pitAtPosition(robot.getX() + i, robot.getY())){
+                        object.put("direction", Direction.EAST);
+                        object.put("type", ObjectTypes.PIT);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.obstacleAtPosition(robot.getX() + i, robot.getY())){
+                        object.put("direction", Direction.EAST);
+                        object.put("type", ObjectTypes.OBSTACLE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    for (Robot otherRobot: world.getAllRobots()){
+                        if (otherRobot.getX() == robot.getX() + i && otherRobot.getY() == robot.getY()){
+                            object.put("direction", Direction.EAST);
+                            object.put("type", ObjectTypes.ROBOT);
+                            object.put("distance", i);
+                            objects.add(object);
+                            robotFound = true;
+                            break;
+                        }
+                    }
+                    if(robotFound){
+                        break;
+                    }
+                }
+                object = new HashMap<>();
+                robotFound = false;
+                for (int i = 1; i <= range; i++) {
+                    if(robot.getX() - i == -world.getWorldWidth()/2){
+                        object.put("direction", Direction.WEST);
+                        object.put("type", ObjectTypes.EDGE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.pitAtPosition(robot.getX() - i, robot.getY())){
+                        object.put("direction", Direction.WEST);
+                        object.put("type", ObjectTypes.PIT);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    if (robot.obstacleAtPosition(robot.getX() - i, robot.getY())){
+                        object.put("direction", Direction.WEST);
+                        object.put("type", ObjectTypes.OBSTACLE);
+                        object.put("distance", i);
+                        objects.add(object);
+                        break;
+                    }
+                    for (Robot otherRobot: world.getAllRobots()){
+                        if (otherRobot.getX() == robot.getX() - i && otherRobot.getY() == robot.getY()){
+                            object.put("direction", Direction.WEST);
+                            object.put("type", ObjectTypes.ROBOT);
+                            object.put("distance", i);
+                            objects.add(object);
+                            robotFound = true;
+                            break;
+                        }
+                    }
+                    if(robotFound){
+                        break;
+                    }
+                }
+
+                server.sendResponse(response.Look(robot.getX(), robot.getY(), robot.getCurrentDirection(), objects));
             }
             default -> {
                 if(robot.getStatus()== RobotStatus.DEAD){

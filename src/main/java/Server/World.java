@@ -98,4 +98,12 @@ public class World {
     public ArrayList<Robot> getAllRobots(){
         return allRobots;
     }
+
+    public int getWorldWidth(){
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
+    }
 }

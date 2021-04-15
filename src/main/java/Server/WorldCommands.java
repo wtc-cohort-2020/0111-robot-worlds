@@ -17,7 +17,7 @@ public class WorldCommands{
         this.world = world;
     }
 
-    public void runCommands(){
+    public void handleWorldCommands(){
         boolean flag = true;
         while (flag){
             System.out.println("What is your bidding master?");

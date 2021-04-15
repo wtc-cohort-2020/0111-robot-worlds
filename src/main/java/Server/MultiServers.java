@@ -1,10 +1,6 @@
 package Server;
 
-import Server.Server;
-
-import java.net.*;
 import java.io.*;
-import java.util.Arrays;
 
 public class MultiServers {
     public static void main(String[] args) throws ClassNotFoundException, IOException {
@@ -24,7 +20,7 @@ public class MultiServers {
         task.start();
 
         WorldCommands worldCommands = new WorldCommands(world);
-        worldCommands.runCommands();
+        worldCommands.handleWorldCommands();
 
         System.exit(0);
     }
