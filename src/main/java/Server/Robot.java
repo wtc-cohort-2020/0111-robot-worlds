@@ -1,14 +1,30 @@
 package Server;
 
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 public class Robot {
     private int x;
     private int y;
-    private final String name;
+    private String name;
     private RobotStatus status;
     private Direction currentDirection;
     private final World world;
+    private final Integer shotDistance;
+    private Integer numberShots;
+    private Random random = new Random();
+    private int shields = 3;
+    private final Integer RELOAD_TIME = 5;
+    private final Integer REPAIR_TIME = 4;
+    private int distance;
+    private Robot hitRobot;
 
-    public Robot(String name, World world){
+
+    public Robot(String name, World world, String type){
         this.x = 0;
         this.y = 0;
         this.name = name;
@@ -16,6 +32,13 @@ public class Robot {
         this.status = RobotStatus.NORMAL;
         this.world = world;
         world.AddRobot(this);
+
+
+            this.shields = world.getSniper().get("shield-strength");
+            this.numberShots = world.getSniper().get("shots");
+            shotDistance= 6 - numberShots;
+
+
     }
 
     public MovementStatus moveForward(){
@@ -104,7 +127,7 @@ public class Robot {
         }
     }
 
-    public boolean obstacleAtPosition(int x, int y){
+    private boolean obstacleAtPosition(int x, int y){
         for(Obstacle obstacle: world.getObstacles()){
             if(obstacle.blocksPosition(x,y)){
                 return true;
@@ -113,7 +136,7 @@ public class Robot {
         return false;
     }
 
-    public boolean pitAtPosition(int x, int y){
+    private boolean pitAtPosition(int x, int y){
         for (Pit pit: world.getPits()){
             if(pit.blocksPosition(x,y)){
                 return true;
@@ -153,6 +176,130 @@ public class Robot {
         }
     }
 
+
+
+
+
+    public void reload() {
+        this.status = RobotStatus.RELOADING;
+        try {
+            //wait reload time then reload.
+            TimeUnit.SECONDS.sleep(RELOAD_TIME);
+            numberShots = 6 - shotDistance;
+        }
+
+
+        catch (InterruptedException e) {
+            System.out.println("Timeout occurred.");
+        }
+    }
+
+    public boolean beenHit () {
+        //Decrease shots by 1
+        numberShots -= 1;
+
+        // For all robots
+        //Look for the closest robot in the line of fire
+        if (this.currentDirection == Direction.NORTH) {
+            for(Robot robot: world.getRobots()) {
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.x == robot.x && robot.y > this.y &&
+                            (robot.y <= this.y + i)) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
+                        distance = i;
+                        hitRobot = robot;
+                        return true;
+                    }
+                }
+
+            }
+
+        }
+
+
+        if (this.currentDirection == Direction.EAST) {
+            for(Robot robot: world.getRobots()) {
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.y == robot.y && robot.x > this.x &&
+                            robot.x == (this.x + i)) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
+                        distance = i;
+                        hitRobot = robot;
+                        return true;
+                    };
+                }
+
+            }
+        }
+
+
+        if (this.currentDirection == Direction.SOUTH) {
+            for(Robot robot: world.getRobots()) {
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.x == robot.x && robot.y < this.y &&
+                            (robot.y + i) == this.y) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
+                        distance = i;
+                        hitRobot= robot;
+                        return true;
+                    }
+                }
+
+            }
+        }
+
+
+        if (this.currentDirection == Direction.WEST) {
+            for(Robot robot: world.getRobots()) {
+                for (int i = 1; i <= shotDistance; i++) {
+                    if (this.y == robot.y && robot.x < this.x &&
+                            (robot.x+i) == this.x) {
+                        //decrease shield of wounded robot by 1 point
+                        robot.decreaseShields();
+                        if (robot.getShields() == -1) {
+                            robot.setStatus(RobotStatus.DEAD);
+                        }
+                        distance = i;
+                        hitRobot = robot;
+                        return true;
+                    }
+                }
+
+            }
+        }
+
+        return false;
+        // if shield-strength equals 0, robot is dead.
+
+    }
+
+    public void repair () {
+        this.status = RobotStatus.REPAIRING;
+        try {
+            //wait repair-time
+            TimeUnit.SECONDS.sleep(REPAIR_TIME);
+            // increase shield to max.
+            shields = 3;
+        }
+
+
+        catch (InterruptedException e) {
+            System.out.println("Timeout occurred.");
+        }
+    }
+
     public int getX() {
         return x;
     }
@@ -173,7 +320,32 @@ public class Robot {
         this.status = status;
     }
 
-    public String getName(){
+    public String getName () {
         return name;
     }
+
+    public int getNumberShots() {
+        return numberShots;
+    }
+
+    public int getShields() {
+        return shields;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public Robot returnHitRobot() {
+        return hitRobot;
+    }
+
+    public void decreaseShields() {
+        shields--;
+    }
+
+    public void increaseShields() {
+        shields++;
+    }
+
 }
