@@ -174,4 +174,32 @@ public class Response {
         finalResponse.add("data", data);
         return finalResponse.toString();
     }
+
+    public String Repair (){
+        JsonObject finalResponse = new JsonObject();
+
+        JsonObject state = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "Done");
+        state.addProperty("status","REPAIR");
+
+        finalResponse.add("data",data);
+        finalResponse.add("state",state);
+
+        return finalResponse.toString();
+    }
+
+    public String Reload() {
+        JsonObject finalResponse = new JsonObject();
+
+        JsonObject state = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "Done");
+        state.addProperty("status","RELOAD");
+
+        finalResponse.add("data",data);
+        finalResponse.add("state",state);
+
+        return finalResponse.toString();
+    }
 }

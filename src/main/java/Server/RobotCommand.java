@@ -181,8 +181,7 @@ public class RobotCommand {
                 }
                 if(newCommand.get("arguments").getAsString().equals("")){
                     robot.reload();
-//                    server.sendResponse(response.Reload(
-//                            robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                   server.sendResponse(response.Reload());
                 }
 
                 else {
@@ -197,8 +196,7 @@ public class RobotCommand {
                 }
                 if (newCommand.get("arguments").getAsString().equals("")) {
                     robot.repair();
-//                    server.sendResponse(response.Repair(
-//                            robot.getX(), robot.getY(), robot.getCurrentDirection()));
+                    server.sendResponse(response.Repair());
                 }
 
 
