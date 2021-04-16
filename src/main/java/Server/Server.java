@@ -37,11 +37,11 @@ public class Server implements Runnable {
             command = new RobotCommand(robot, this, world);
             while((messageFromClient = in.readLine()) != null) {
                 System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                System.out.println(messageFromClient);
                 jsonMessage  = JsonParser.parseString(messageFromClient).getAsJsonObject();
 //                jsonMessage = (messageFromClient).getAsJsonObject();
                 command.NewCommand(jsonMessage);
             }
+            world.RemoveRobot(robot);
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
         } finally {
