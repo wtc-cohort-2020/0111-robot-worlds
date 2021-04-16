@@ -1,5 +1,6 @@
 package Server;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -14,7 +15,7 @@ public class Server implements Runnable {
     private final String clientMachine;
     private Robot robot;
     private RobotCommand command;
-    private World world;
+    private final World world;
 
     public Server(Socket socket, World world) throws IOException {
         this.world = world;
@@ -33,11 +34,9 @@ public class Server implements Runnable {
             JsonObject jsonMessage;
             command = new RobotCommand(robot, this, world);
             while((messageFromClient = in.readLine()) != null) {
-                if(messageFromClient.equals("exit")){
-                    break;
-                }
                 System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                jsonMessage = new JsonParser().parse(messageFromClient).getAsJsonObject();
+                jsonMessage  = JsonParser.parseString(messageFromClient).getAsJsonObject();
+//                jsonMessage = (messageFromClient).getAsJsonObject();
                 command.NewCommand(jsonMessage);
             }
         } catch(IOException ex) {
@@ -48,6 +47,9 @@ public class Server implements Runnable {
     }
 
     private void closeQuietly() {
+        if(world.getRobots().contains(robot)){
+            world.RemoveRobot(robot);
+        }
         try { in.close(); out.close();
         } catch(IOException ignored) {}
     }

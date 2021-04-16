@@ -1,35 +1,78 @@
 package Server;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class World {
-    Hashtable<String,Robot> allRobots = new Hashtable<>();
+    ArrayList<Robot> allRobots = new ArrayList<>();
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
+    private JsonObject fileObject;
+
 
     int worldWidth;
     int worldHeight;
 
+    HashMap<String, Integer> sniperRobot;
+    HashMap<String, Integer> pistolRobot;
+    HashMap<String, Integer> standardRobot;
+
     public World(){
-        worldHeight = 200;
-        worldWidth = 200;
+        try {
+            File input = new File("src/main/java/Server/WorldSpecs.json");
+            JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
+            this.fileObject = fileElement.getAsJsonObject();
+
+            //Extracting basic fields
+
+            worldHeight = fileObject.get("height").getAsInt();
+            worldWidth = fileObject.get("width").getAsInt();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         CreateObstacles();
         CreatePits();
+        setRobotParams();
     }
 
-    public World(ArrayList<Pit> pits,ArrayList<Obstacle> obstacles){
+    public World(ArrayList<Pit> pits, ArrayList<Obstacle> obstacles){
         this.pits = pits;
         this.obstacles = obstacles;
     }
 
-    public void AddRobot(Robot robot, String name){
-        allRobots.put(name, robot);
+    public void setRobotParams() {
+        //Sets config details based on robot type.
+
+        sniperRobot = new HashMap<>();
+        sniperRobot.put("shot-distance",4);
+        sniperRobot.put("shots",2);
+        sniperRobot.put("shield-strength",3);
+
+
+        pistolRobot = new HashMap<>();
+        pistolRobot.put("shot-distance",2);
+        pistolRobot.put("shots",4);
+        pistolRobot.put("shield-strength",3);
+
+
+        standardRobot = new HashMap<>();
+        standardRobot.put("shot-distance",3);
+        standardRobot.put("shots",3);
+        standardRobot.put("shield-strength",3);
     }
 
-    public void RemoveRobot(String name){
-        allRobots.remove(name);
+
+
+
+    public void RemoveRobot(Robot robot){
+        allRobots.remove(robot);
     }
 
     private void CreateObstacles(){
@@ -91,5 +134,31 @@ public class World {
 
     public ArrayList<Pit> getPits(){
         return pits;
+    }
+
+    public ArrayList<Robot> getRobots() { return allRobots; }
+
+    public HashMap<String, Integer> getSniper() {
+        return sniperRobot;
+    }
+
+    public HashMap<String, Integer> getStandard() {
+        return standardRobot;
+    }
+
+    public HashMap<String, Integer> getPistol() {
+        return pistolRobot;
+    }
+
+    public void AddRobot(Robot robot){
+        allRobots.add(robot);
+    }
+
+    public int getWorldWidth(){
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
     }
 }
