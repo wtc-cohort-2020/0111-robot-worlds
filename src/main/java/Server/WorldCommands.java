@@ -29,13 +29,13 @@ public class WorldCommands{
                 }
 
                 case "robots" ->{
-                    for(Robot robot: world.getAllRobots()){
+                    for(Robot robot: world.getRobots()){
                         System.out.println("\n" + robot.getName() +", state:");
                         System.out.println("   Position: [" + robot.getX() +
                                 ", " + robot.getY() + "]");
                         System.out.println("   Direction: " + robot.getCurrentDirection());
-                        System.out.println("   Shields: ");
-                        System.out.println("   Shots: ");
+                        System.out.println("   Shields: " + robot.getShields());
+                        System.out.println("   Shots: " + robot.getNumberShots());
                         System.out.println("   Status: " + robot.getStatus());
                     }
                 }
@@ -49,20 +49,20 @@ public class WorldCommands{
                     for(Pit pit: world.getPits()){
                         System.out.println("("+pit.getBottomLeftX()+","+pit.getBottomLeftY()+")");
                     }
-                    for(Robot robot: world.getAllRobots()){
+                    for(Robot robot: world.getRobots()){
                         System.out.println("\n" + robot.getName() +", state:");
                         System.out.println("   Position: [" + robot.getX() +
                                 ", " + robot.getY() + "]");
                         System.out.println("   Direction: " + robot.getCurrentDirection());
-                        System.out.println("   Shields: ");
-                        System.out.println("   Shots: ");
+                        System.out.println("   Shields: " + robot.getShields());
+                        System.out.println("   Shots: " + robot.getNumberShots());
                         System.out.println("   Status: " + robot.getStatus());
                     }
                 }
 
                 case "purge" ->{
                     boolean purgedRobot = false;
-                    for(Robot robot: world.getAllRobots()){
+                    for(Robot robot: world.getRobots()){
                         if(robot.getName().equals(argument)){
                             robot.setStatus(RobotStatus.DEAD);
                             world.RemoveRobot(robot);

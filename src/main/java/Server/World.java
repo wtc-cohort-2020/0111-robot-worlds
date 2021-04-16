@@ -33,7 +33,7 @@ public class World {
             //Extracting basic fields
 
             worldHeight = fileObject.get("height").getAsInt();
-            worldWidth = fileObject.get("height").getAsInt();
+            worldWidth = fileObject.get("width").getAsInt();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -71,8 +71,8 @@ public class World {
 
 
 
-    public void RemoveRobot(String name){
-        allRobots.remove(name);
+    public void RemoveRobot(Robot robot){
+        allRobots.remove(robot);
     }
 
     private void CreateObstacles(){
@@ -152,5 +152,13 @@ public class World {
 
     public void AddRobot(Robot robot){
         allRobots.add(robot);
+    }
+
+    public int getWorldWidth(){
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
     }
 }

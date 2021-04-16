@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Robot {
@@ -21,25 +22,66 @@ public class Robot {
 
 
     public Robot(String name, World world, String type){
-        this.x = 0;
+        this.world = world;
+        boolean positionClear = false;
+        while (!positionClear){
+            positionClear = true;
+            this.x = ThreadLocalRandom.current().nextInt(-(world.getWorldWidth()/2)+1,
+                    (world.getWorldWidth()/2));
+            this.y = ThreadLocalRandom.current().nextInt(-(world.getWorldHeight()/2)+1,
+                    (world.getWorldHeight()/2));
+            for(Robot robotInWorld: world.getRobots()){
+                if (robotInWorld.getX() == x && robotInWorld.getY() == y) {
+                    positionClear = false;
+                    break;
+                }
+            }
+            if(obstacleAtPosition(x,y)){
+                positionClear = false;
+            }
+
+            if(pitAtPosition(x,y)){
+                positionClear = false;
+            }
+
+        }
+        this.name = name;
+        this.currentDirection = Direction.NORTH;
+        this.status = RobotStatus.NORMAL;
+
+        world.AddRobot(this);
+
+        this.shields = world.getSniper().get("shield-strength");
+        this.numberShots = world.getSniper().get("shots");
+        shotDistance= 6 - numberShots;
+
+
+    }
+
+    public Robot(String name, World world){
         this.y = 0;
+        this.x = 0;
         this.name = name;
         this.currentDirection = Direction.NORTH;
         this.status = RobotStatus.NORMAL;
         this.world = world;
         world.AddRobot(this);
 
-
-            this.shields = world.getSniper().get("shield-strength");
-            this.numberShots = world.getSniper().get("shots");
-            shotDistance= 6 - numberShots;
+        this.shields = 3;
+        this.numberShots = 3;
+        shotDistance= 6 - numberShots;
 
 
     }
 
     public MovementStatus moveForward(){
         if(currentDirection.equals(Direction.NORTH)){
-            if(obstacleAtPosition(x,y+1)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x && robotInWorld.getY() == y+1){
+                    return MovementStatus.Obstructed;
+                }
+            }
+            if(obstacleAtPosition(x,y+1) || y+1 == world.getWorldHeight()/2){
                 return MovementStatus.Obstructed;
             }
             y = y + 1;
@@ -49,7 +91,12 @@ public class Robot {
             return MovementStatus.Done;
         }
         else if(currentDirection.equals(Direction.SOUTH)){
-            if(obstacleAtPosition(x,y-1)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x && robotInWorld.getY() == y-1){
+                    return MovementStatus.Obstructed;
+                }
+            }
+            if(obstacleAtPosition(x,y-1) || y-1 == -world.getWorldHeight()/2){
                 return MovementStatus.Obstructed;
             }
             y = y - 1;
@@ -59,7 +106,12 @@ public class Robot {
             return MovementStatus.Done;
         }
         else if(currentDirection.equals(Direction.EAST)){
-            if(obstacleAtPosition(x+1,y)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x+1 && robotInWorld.getY() == y){
+                    return MovementStatus.Obstructed;
+                }
+            }
+            if(obstacleAtPosition(x+1,y) || x+1 == world.getWorldWidth()/2){
                 return MovementStatus.Obstructed;
             }
             x = x + 1;
@@ -69,7 +121,12 @@ public class Robot {
             return MovementStatus.Done;
         }
         else{
-            if(obstacleAtPosition(x-1,y)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x-1 && robotInWorld.getY() == y){
+                    return MovementStatus.Obstructed;
+                }
+            }
+            if(obstacleAtPosition(x-1,y) || x-1 == -world.getWorldWidth()/2){
                 return MovementStatus.Obstructed;
             }
             x = x - 1;
@@ -82,7 +139,7 @@ public class Robot {
 
     public MovementStatus moveBack(){
         if(currentDirection.equals(Direction.NORTH)){
-            if(obstacleAtPosition(x,y-1)){
+            if(obstacleAtPosition(x,y-1) || y-1 == -world.getWorldHeight()/2){
                 return MovementStatus.Obstructed;
             }
             y = y - 1;
@@ -92,7 +149,7 @@ public class Robot {
             return MovementStatus.Done;
         }
         else if(currentDirection.equals(Direction.SOUTH)){
-            if(obstacleAtPosition(x,y+1)){
+            if(obstacleAtPosition(x,y+1) || y+1 == world.getWorldHeight()){
                 return MovementStatus.Obstructed;
             }
             y = y + 1;
@@ -102,7 +159,7 @@ public class Robot {
             return MovementStatus.Done;
         }
         else if(currentDirection.equals(Direction.EAST)){
-            if(obstacleAtPosition(x-1,y)){
+            if(obstacleAtPosition(x-1,y) || x-1 == -world.getWorldWidth()/2){
                 return MovementStatus.Obstructed;
             }
             x = x - 1;
@@ -112,7 +169,7 @@ public class Robot {
             return MovementStatus.Done;
         }
         else{
-            if(obstacleAtPosition(x+1,y)){
+            if(obstacleAtPosition(x+1,y) || x+1 == world.getWorldWidth()/2){
                 return MovementStatus.Obstructed;
             }
             x = x + 1;
@@ -123,7 +180,7 @@ public class Robot {
         }
     }
 
-    private boolean obstacleAtPosition(int x, int y){
+    public boolean obstacleAtPosition(int x, int y){
         for(Obstacle obstacle: world.getObstacles()){
             if(obstacle.blocksPosition(x,y)){
                 return true;
@@ -132,7 +189,7 @@ public class Robot {
         return false;
     }
 
-    private boolean pitAtPosition(int x, int y){
+    public boolean pitAtPosition(int x, int y){
         for (Pit pit: world.getPits()){
             if(pit.blocksPosition(x,y)){
                 return true;
@@ -184,10 +241,10 @@ public class Robot {
             numberShots = 6 - shotDistance;
         }
 
-
         catch (InterruptedException e) {
             System.out.println("Timeout occurred.");
         }
+        this.status = RobotStatus.NORMAL;
     }
 
     public boolean beenHit () {
@@ -205,6 +262,7 @@ public class Robot {
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
                             robot.setStatus(RobotStatus.DEAD);
+                            world.RemoveRobot(robot);
                         }
                         distance = i;
                         hitRobot = robot;
@@ -226,6 +284,7 @@ public class Robot {
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
                             robot.setStatus(RobotStatus.DEAD);
+                            world.RemoveRobot(robot);
                         }
                         distance = i;
                         hitRobot = robot;
@@ -246,6 +305,7 @@ public class Robot {
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
                             robot.setStatus(RobotStatus.DEAD);
+                            world.RemoveRobot(robot);
                         }
                         distance = i;
                         hitRobot= robot;
@@ -266,6 +326,7 @@ public class Robot {
                         robot.decreaseShields();
                         if (robot.getShields() == -1) {
                             robot.setStatus(RobotStatus.DEAD);
+                            world.RemoveRobot(robot);
                         }
                         distance = i;
                         hitRobot = robot;
@@ -290,10 +351,10 @@ public class Robot {
             shields = 3;
         }
 
-
         catch (InterruptedException e) {
             System.out.println("Timeout occurred.");
         }
+        this.status = RobotStatus.NORMAL;
     }
 
     public int getX() {
