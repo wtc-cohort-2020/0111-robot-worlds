@@ -162,12 +162,15 @@ public class Client {
             String messageFromServer = in.readLine();
             System.out.println("Response: "+messageFromServer);
             while (true){
+                myRobot = new JsonObject();
+
                 input = scanner.nextLine();
                 if(input.equalsIgnoreCase("quit")){
+                    out.println(myRobot.toString());
+                    out.flush();
                     break;
                 }
 
-                myRobot = new JsonObject();
                 myRobot.addProperty("robot", name);
 
                 splitCommand(input);
