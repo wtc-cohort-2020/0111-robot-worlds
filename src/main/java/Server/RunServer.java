@@ -2,7 +2,7 @@ package Server;
 
 import java.io.*;
 
-public class MultiServers {
+public class RunServer {
     public static void main(String[] args) throws ClassNotFoundException, IOException {
 
         World world = new World();

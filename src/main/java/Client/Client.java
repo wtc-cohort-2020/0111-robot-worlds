@@ -125,6 +125,7 @@
 
 package Client;
 
+import Server.AcceptClients;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
@@ -140,6 +141,8 @@ public class Client {
 
 
     public static void main(String[] args) {
+
+
         try (
                 Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
                 PrintStream out = new PrintStream(socket.getOutputStream());
@@ -147,6 +150,9 @@ public class Client {
                         socket.getInputStream()))
         )
         {
+            Runnable r = new ReceiveMessages(in);
+            Thread task = new Thread(r);
+            task.start();
             String name;
             Scanner scanner = new Scanner(System.in);
             String input;
@@ -159,16 +165,14 @@ public class Client {
             myRobot.addProperty("arguments", "");
             out.println(myRobot.toString());
             out.flush();
-            String messageFromServer = in.readLine();
-            System.out.println("Response: "+messageFromServer);
+//            String messageFromServer = in.readLine();
+//            System.out.println("Response: "+messageFromServer);
             while (true){
                 myRobot = new JsonObject();
 
                 input = scanner.nextLine();
                 if(input.equalsIgnoreCase("quit")){
-                    out.println(myRobot.toString());
-                    out.flush();
-                    break;
+                    System.exit(0);
                 }
 
                 myRobot.addProperty("robot", name);
@@ -188,12 +192,14 @@ public class Client {
                 out.println(myRobot.toString());
                 out.flush();
 
-                messageFromServer = in.readLine();
-                System.out.println("Response: "+messageFromServer);
+//                messageFromServer = in.readLine();
+//                System.out.println("Response: "+messageFromServer);
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("\nCould not connect to server. " +
+                    "Please make sure you run the program with the IP address and Port as arguments.");
+//            e.printStackTrace();
         }
     }
 
