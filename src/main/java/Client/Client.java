@@ -1,238 +1,67 @@
-//package Client;
-//
-//import com.google.gson.Gson;
-//import com.google.gson.JsonArray;
-//import com.google.gson.JsonElement;
-//import com.google.gson.JsonObject;
-//
-//import java.net.*;
-//import java.io.*;
-//import java.security.cert.TrustAnchor;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.Scanner;
-//
-//public class Client {
-//    static String command;
-//    static String[] arguments = new String[3];
-//    static String name;
-//
-//
-//    public static void main(String[] args) {
-//        try (
-//                Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
-//                PrintStream out = new PrintStream(socket.getOutputStream());
-//                BufferedReader in = new BufferedReader(new InputStreamReader(
-//                        socket.getInputStream()))
-//        ) {
-//            Scanner scanner = new Scanner(System.in);
-//
-//
-////            String messageFromServer = in.readLine();
-////            System.out.println("Response: "+messageFromServer);
-//            while (true) {
-//                String input;
-//                input = scanner.nextLine();
-//                if (input.equalsIgnoreCase("quit")) {
-//                    break;
-//                }
-//
-//                JsonObject myRobot = new JsonObject();
-//
-//
-//                splitCommand(input);
-////                System.out.println(name);
-////                System.out.println(command);
-//                System.out.println(Arrays.toString(arguments));
-//
-//                Gson gson = new Gson();
-//
-//                myRobot.addProperty("name", name);
-//                myRobot.addProperty("command", command);
-//                String myArgs = gson.toJson(arguments);
-//                myRobot.addProperty("arguments", myArgs);
-//
-//
-//                out.println(myRobot.toString());
-//                out.flush();
-//
-//                String messageFromServer = in.readLine();
-//                System.out.println("Response: " + messageFromServer);
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static void commandString(String input) {
-//        System.out.println(input);
-//        splitCommand(input);
-//
-//    }
-//
-//
-//    public static void splitCommand(String input) {
-//        String[] commandAndArgs = input.split(" ");
-//
-//        switch (commandAndArgs.length) {
-//            case 1:
-//                command = commandAndArgs[0];
-//                return;
-//
-//            case 2:
-//
-//                command = commandAndArgs[0];
-//                arguments[0] = commandAndArgs[1];
-//                return;
-//
-//
-//            case 3:
-//
-//                command = commandAndArgs[0];
-//                System.out.println(commandAndArgs[1]);
-//                if (commandAndArgs[1].equals("pistol")) {
-//                    arguments[0] = "pistol";
-//                    arguments[1] = "3";
-//                    arguments[2] = "4";
-//                }
-//
-//
-//                else if (commandAndArgs[1].equals("sniper")) {
-//                    arguments[0] = "sniper";
-//                    arguments[1] = "3";
-//                    arguments[2] = "4";
-//                }
-//
-//                else if (commandAndArgs[1].equals("standard")) {
-//                    arguments[0] = "standard";
-//                    arguments[1] = "3";
-//                    arguments[2] = "3";
-//                }
-//
-//                else {
-//                        arguments[0] = "shouldBeAnError";
-//                        arguments[1] = "3";
-//                        arguments[2] = "3";
-//                }
-//                name = commandAndArgs[2];
-//
-//        }
-//
-//    }
-//}
-
 package Client;
-
-import Server.AcceptClients;
-import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Client {
-    static String command;
-    static String[] arguments = new String[2];
-
 
     public static void main(String[] args) {
+        String name = "";
+        String type = "";
+        Scanner scanner = new Scanner(System.in);
 
+        Socket socket;
+        PrintStream out = null;
+        BufferedReader in = null;
+        HandleCommand handleCommand;
 
-        try (
-                Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
-                PrintStream out = new PrintStream(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        socket.getInputStream()))
-        )
-        {
-            Runnable r = new ReceiveMessages(in);
-            Thread task = new Thread(r);
-            task.start();
-            String name;
-            Scanner scanner = new Scanner(System.in);
-            String input;
+        String input;
+
+        try {
+            socket = new Socket(args[0], Integer.parseInt(args[1]));
+            out = new PrintStream(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("\nCould not connect to server. " +
+                    "Please make sure you run the program with the correct IP address and Port as arguments.");
+            System.exit(0);
+        }
+
+        while (name.equals("")){
             System.out.println("Give me a name: ");
             input = scanner.nextLine();
             name = input;
-            JsonObject myRobot = new JsonObject();
-            myRobot.addProperty("robot", input);
-            myRobot.addProperty("command", "launch");
-            myRobot.addProperty("arguments", "");
-            out.println(myRobot.toString());
-            out.flush();
-//            String messageFromServer = in.readLine();
-//            System.out.println("Response: "+messageFromServer);
-            while (true){
-                myRobot = new JsonObject();
+        }
 
-                input = scanner.nextLine();
-                if(input.equalsIgnoreCase("quit")){
-                    System.exit(0);
-                }
+        while (type.equals("")){
+            System.out.println("What type of robot do you want{sniper, pistol, standard}: ");
+            input = scanner.nextLine();
+            type = input;
+        }
 
-                myRobot.addProperty("robot", name);
+        Runnable r = new ReceiveMessages(in);
+        Thread task = new Thread(r);
+        task.start();
+        handleCommand = new HandleCommand(name, type, out);
 
-                splitCommand(input);
-//                System.out.println(command);
-//                System.out.println(arguments[0]);
+        handleCommand.newCommand("launch");
 
-                myRobot.addProperty("command", command);
 
-                if (arguments.length == 2) {
-                    myRobot.addProperty("arguments", arguments[0]);
-                }
-                if (arguments.length==1) {
-                    myRobot.addProperty("arguments", arguments[0]);
-                }
-                out.println(myRobot.toString());
-                out.flush();
-
-//                messageFromServer = in.readLine();
-//                System.out.println("Response: "+messageFromServer);
+        while (true){
+            input = scanner.nextLine();
+            if(input.equalsIgnoreCase("quit")){
+                System.exit(0);
             }
-
-        } catch (IOException e) {
-            System.out.println("\nCould not connect to server. " +
-                    "Please make sure you run the program with the IP address and Port as arguments.");
-//            e.printStackTrace();
+            handleCommand.newCommand(input.toLowerCase(Locale.ROOT));
         }
     }
-
-    public static void commandString(String input) {
-        System.out.println(input);
-        splitCommand(input);
-
-    }
-
-
-    public static void splitCommand(String input) {
-        String [] commandAndArgs = input.split(" ");
-
-        switch(commandAndArgs.length) {
-            case 1:
-                command = commandAndArgs[0];
-                return;
-
-            case 2:
-
-                command = commandAndArgs[0];
-                arguments[0] = commandAndArgs[1];
-                return;
-
-
-            case 3:
-                command = commandAndArgs[0];
-                arguments[0] = commandAndArgs[1];
-                arguments[1] = commandAndArgs[2];
-                return;
-        }
-    }
-
 }
 
 //                Socket socket = new Socket("127.0.0.1", 1999);
