@@ -104,8 +104,8 @@ public class Request {
         }
         else if(type.equals("bomber")){
             arguments[0] = "bomber";
-            arguments[0] = "3";
-            arguments[0] = "0";
+            arguments[1] = "3";
+            arguments[2] = "0";
         }
         else {
             arguments[0] = "standard";

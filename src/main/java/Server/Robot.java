@@ -22,7 +22,7 @@ public class Robot {
     private Robot hitRobot;
 
 
-    public Robot(String name, World world, String type){
+    public Robot(String name, World world, Integer shield, Integer shots){
         this.world = world;
         boolean positionClear = false;
         while (!positionClear){
@@ -52,28 +52,28 @@ public class Robot {
 
         world.AddRobot(this);
 
-        this.shields = world.getSniper().get("shield-strength");
-        this.numberShots = world.getSniper().get("shots");
+        this.shields = shield;
+        this.numberShots = shots;
         shotDistance= 6 - numberShots;
 
 
     }
 
-    public Robot(String name, World world){
-        this.y = 0;
-        this.x = 0;
-        this.name = name;
-        this.currentDirection = Direction.NORTH;
-        this.status = RobotStatus.NORMAL;
-        this.world = world;
-        world.AddRobot(this);
-
-        this.shields = 3;
-        this.numberShots = 3;
-        shotDistance= 6 - numberShots;
-
-
-    }
+//    public Robot(String name, World world){
+//        this.y = 0;
+//        this.x = 0;
+//        this.name = name;
+//        this.currentDirection = Direction.NORTH;
+//        this.status = RobotStatus.NORMAL;
+//        this.world = world;
+//        world.AddRobot(this);
+//
+//        this.shields = 3;
+//        this.numberShots = 3;
+//        shotDistance= 6 - numberShots;
+//
+//
+//    }
 
     public MovementStatus moveForward(){
         if(currentDirection.equals(Direction.NORTH)){
