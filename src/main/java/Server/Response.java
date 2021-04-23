@@ -187,4 +187,32 @@ public class Response {
 
         return finalResponse.toString();
     }
+
+    public String setMine(){
+        JsonObject finalResponse = new JsonObject();
+
+        JsonObject state = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "Done");
+        state.addProperty("status","SETMINE");
+        finalResponse.addProperty("result", "OK");
+        finalResponse.add("data",data);
+        finalResponse.add("state",state);
+
+        return finalResponse.toString();
+    }
+
+    public String stepOnMine(Robot robot){
+        JsonObject finalResponse = new JsonObject();
+
+        JsonObject status = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "You stepped on a mine.");
+        status.addProperty("status", String.valueOf(robot.getStatus()));
+
+        finalResponse.add("data",data);
+        finalResponse.add("state",status);
+
+        return finalResponse.toString();
+    }
 }

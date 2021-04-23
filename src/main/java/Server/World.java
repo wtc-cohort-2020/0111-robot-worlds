@@ -14,6 +14,7 @@ public class World {
     ArrayList<Robot> allRobots = new ArrayList<>();
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
+    ArrayList<Mine> mines = new ArrayList<>();
     private JsonObject fileObject;
 
     int worldWidth;
@@ -66,9 +67,6 @@ public class World {
         standardRobot.put("shots",3);
         standardRobot.put("shield-strength",3);
     }
-
-
-
 
     public void RemoveRobot(Robot robot){
         allRobots.remove(robot);
@@ -159,5 +157,17 @@ public class World {
 
     public int getWorldHeight() {
         return worldHeight;
+    }
+
+    public void addMine(Mine mine){
+        mines.add(mine);
+    }
+
+    public void removeMine(Mine mine){
+        mines.remove(mine);
+    }
+
+    public ArrayList<Mine> getMines(){
+        return mines;
     }
 }

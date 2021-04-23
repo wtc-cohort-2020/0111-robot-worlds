@@ -1,5 +1,6 @@
 package Server;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ public class RobotCommand {
     private final World world;
 
 
-    public RobotCommand(Robot robot, Server server, World world){
-        this.robot = robot;
+    public RobotCommand(Server server, World world){
         this.server = server;
         this.world = world;
     }
@@ -26,8 +26,8 @@ public class RobotCommand {
                 isInWorld = false;
             }
         }
-        catch (NullPointerException e) {
-            e.printStackTrace();
+        catch (NullPointerException ignored) {
+
         }
         try {
             switch (newCommand.get("command").getAsString()) {
@@ -37,6 +37,7 @@ public class RobotCommand {
                         isInWorld = true;
                         robot = new Robot(newCommand.get("robot").getAsString(), world, "");
                         server.sendResponse(response.LaunchSuccess(robot));
+                        server.setRobot(robot);
                     }
                 }
 
@@ -318,6 +319,33 @@ public class RobotCommand {
                     }
                     robot.repair();
                     server.sendResponse(response.Repair());
+                }
+
+                case "mine" -> {
+                    int x = robot.getX();
+                    int y = robot.getY();
+                    Mine mine = new Mine(x, y);
+                    world.addMine(mine);
+                    server.sendResponse(response.setMine());
+                    robot.setMine();
+
+                    String[] mySteps = new String[1];
+                    mySteps[0] = String.valueOf(1);
+                    Gson gson = new Gson();
+                    JsonObject finalResponse = new JsonObject();
+
+                    finalResponse.addProperty("robot",robot.getName());
+
+                    finalResponse.addProperty("command","forward");
+                    finalResponse.add("arguments", gson.toJsonTree(mySteps));
+
+                    NewCommand(finalResponse);
+
+                    if(robot.getX() == x && robot.getY() == y){
+                        robot.steppedOnMine();
+                    }
+
+                    server.sendResponse(response.stepOnMine(robot));
                 }
 
                 default -> {

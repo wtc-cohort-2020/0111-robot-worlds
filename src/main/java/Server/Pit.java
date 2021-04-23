@@ -29,8 +29,4 @@ public class Pit {
     public int getSize() {
         return size;
     }
-
-    public boolean blocksPath(int newPositionX, int newPositionY, int positionX, int positionY){
-        return true;
-    }
 }

@@ -29,8 +29,4 @@ public class Obstacle {
         return (positionX >= bottomLeftX && positionX <= bottomLeftX + 4) &&
                 (positionY >= bottomLeftY && positionY <= bottomLeftY + 4);
     }
-
-    public boolean blocksPath(int newPositionX, int newPositionY, int positionX, int positionY){
-        return true;
-    }
 }

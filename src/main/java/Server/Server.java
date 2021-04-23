@@ -34,25 +34,23 @@ public class Server implements Runnable {
         try {
             String messageFromClient;
             JsonObject jsonMessage;
-            command = new RobotCommand(robot, this, world);
+            command = new RobotCommand(this, world);
             while((messageFromClient = in.readLine()) != null) {
                 System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                 jsonMessage  = JsonParser.parseString(messageFromClient).getAsJsonObject();
 //                jsonMessage = (messageFromClient).getAsJsonObject();
                 command.NewCommand(jsonMessage);
             }
-            world.RemoveRobot(robot);
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
         } finally {
+            robot.setStatus(RobotStatus.DEAD);
+            world.RemoveRobot(robot);
             closeQuietly();
         }
     }
 
     private void closeQuietly() {
-        if(world.getRobots().contains(robot)){
-            world.RemoveRobot(robot);
-        }
         try { in.close(); out.close();
         } catch(IOException ignored) {}
     }
@@ -60,5 +58,9 @@ public class Server implements Runnable {
     public void sendResponse(String response){
         out.println(response);
         out.flush();
+    }
+
+    public void setRobot(Robot robot){
+        this.robot = robot;
     }
 }

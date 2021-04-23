@@ -17,6 +17,7 @@ public class Robot {
     private int shields = 3;
     private final Integer RELOAD_TIME = 5;
     private final Integer REPAIR_TIME = 4;
+    private final Integer SET_MINE_TIME = 4;
     private int distance;
     private Robot hitRobot;
 
@@ -229,9 +230,13 @@ public class Robot {
         }
     }
 
-
-
-
+    public void steppedOnMine(){
+        shields = shields - 3;
+        if (shields < 0){
+            this.status = RobotStatus.DEAD;
+            world.RemoveRobot(this);
+        }
+    }
 
     public void reload() {
         this.status = RobotStatus.RELOADING;
@@ -245,6 +250,19 @@ public class Robot {
             System.out.println("Timeout occurred.");
         }
         this.status = RobotStatus.NORMAL;
+    }
+
+    public void setMine(){
+        int rememberShield = shields;
+        shields = 0;
+        try {
+            TimeUnit.SECONDS.sleep(SET_MINE_TIME);
+        }
+
+        catch (InterruptedException e) {
+            System.out.println("Timeout occurred.");
+        }
+        shields = rememberShield;
     }
 
     public boolean beenHit () {
