@@ -49,6 +49,10 @@ public class WorldCommands{
                     for(Pit pit: world.getPits()){
                         System.out.println("("+pit.getBottomLeftX()+","+pit.getBottomLeftY()+")");
                     }
+                    System.out.println("\nMines");
+                    for(Mine mine: world.getMines()){
+                        System.out.println("("+mine.getX()+","+mine.getY()+")");
+                    }
                     for(Robot robot: world.getRobots()){
                         System.out.println("\n" + robot.getName() +", state:");
                         System.out.println("   Position: [" + robot.getX() +

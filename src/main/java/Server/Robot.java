@@ -86,6 +86,11 @@ public class Robot {
                 return MovementStatus.Obstructed;
             }
             y = y + 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
+
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
@@ -101,6 +106,11 @@ public class Robot {
                 return MovementStatus.Obstructed;
             }
             y = y - 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
+
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
@@ -116,6 +126,11 @@ public class Robot {
                 return MovementStatus.Obstructed;
             }
             x = x + 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
+
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
@@ -131,6 +146,11 @@ public class Robot {
                 return MovementStatus.Obstructed;
             }
             x = x - 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
+
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
@@ -140,40 +160,76 @@ public class Robot {
 
     public MovementStatus moveBack(){
         if(currentDirection.equals(Direction.NORTH)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x && robotInWorld.getY() == y-1){
+                    return MovementStatus.Obstructed;
+                }
+            }
             if(obstacleAtPosition(x,y-1) || y-1 == -world.getWorldHeight()/2){
                 return MovementStatus.Obstructed;
             }
             y = y - 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
             return MovementStatus.Done;
         }
         else if(currentDirection.equals(Direction.SOUTH)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x && robotInWorld.getY() == y+1){
+                    return MovementStatus.Obstructed;
+                }
+            }
             if(obstacleAtPosition(x,y+1) || y+1 == world.getWorldHeight()){
                 return MovementStatus.Obstructed;
             }
             y = y + 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
             return MovementStatus.Done;
         }
         else if(currentDirection.equals(Direction.EAST)){
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x-1 && robotInWorld.getY() == y){
+                    return MovementStatus.Obstructed;
+                }
+            }
             if(obstacleAtPosition(x-1,y) || x-1 == -world.getWorldWidth()/2){
                 return MovementStatus.Obstructed;
             }
             x = x - 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
             return MovementStatus.Done;
         }
         else{
+            for(Robot robotInWorld: world.getRobots()){
+                if(robotInWorld.getX() == x+1 && robotInWorld.getY() == y){
+                    return MovementStatus.Obstructed;
+                }
+            }
             if(obstacleAtPosition(x+1,y) || x+1 == world.getWorldWidth()/2){
                 return MovementStatus.Obstructed;
             }
             x = x + 1;
+            if(mineAtPosition(x, y)){
+                this.steppedOnMine();
+                return MovementStatus.Mine;
+            }
             if(pitAtPosition(x,y)){
                 return MovementStatus.Fell;
             }
@@ -193,6 +249,16 @@ public class Robot {
     public boolean pitAtPosition(int x, int y){
         for (Pit pit: world.getPits()){
             if(pit.blocksPosition(x,y)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean mineAtPosition(int x, int y){
+        for (Mine mine: world.getMines()){
+            if(mine.blocksPosition(x, y)){
+                world.removeMine(mine);
                 return true;
             }
         }
@@ -231,7 +297,7 @@ public class Robot {
     }
 
     public void steppedOnMine(){
-        shields = shields - 3;
+        shields -= 3;
         if (shields < 0){
             this.status = RobotStatus.DEAD;
             world.RemoveRobot(this);

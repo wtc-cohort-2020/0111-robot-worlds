@@ -41,7 +41,7 @@ public class Client {
         }
 
         while (type.equals("")){
-            System.out.println("What type of robot do you want{sniper, pistol, standard}: ");
+            System.out.println("What type of robot do you want{sniper, pistol, standard, bomber}: ");
             input = scanner.nextLine();
             type = input;
         }

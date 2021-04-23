@@ -64,6 +64,11 @@ public class RobotCommand {
                             world.RemoveRobot(robot);
                             break;
                         }
+                        if (movementStatus == MovementStatus.Mine){
+                            isSuccessful = false;
+                            server.sendResponse(response.stepOnMine(robot));
+                            break;
+                        }
                     }
                     if(isSuccessful){
                         server.sendResponse(response.MovementSuccess(robot));
@@ -89,6 +94,11 @@ public class RobotCommand {
                             server.sendResponse(response.MovementIntoPit());
                             robot.setStatus(RobotStatus.DEAD);
                             world.RemoveRobot(robot);
+                            break;
+                        }
+                        if (movementStatus == MovementStatus.Mine){
+                            isSuccessful = false;
+                            server.sendResponse(response.stepOnMine(robot));
                             break;
                         }
                     }
@@ -158,6 +168,15 @@ public class RobotCommand {
                                 break;
                             }
                         }
+                        for (Mine mine: world.getMines()){
+                            if (mine.getX() == robot.getX() && mine.getY() == robot.getY() + i){
+                                object.put("direction", Direction.NORTH);
+                                object.put("type", ObjectTypes.MINE);
+                                object.put("distance", i);
+                                objects.add(object);
+                                break;
+                            }
+                        }
                         if(robotFound){
                             break;
                         }
@@ -193,6 +212,15 @@ public class RobotCommand {
                                 object.put("distance", i);
                                 objects.add(object);
                                 robotFound = true;
+                                break;
+                            }
+                        }
+                        for (Mine mine: world.getMines()){
+                            if (mine.getX() == robot.getX() && mine.getY() == robot.getY() - i){
+                                object.put("direction", Direction.SOUTH);
+                                object.put("type", ObjectTypes.MINE);
+                                object.put("distance", i);
+                                objects.add(object);
                                 break;
                             }
                         }
@@ -234,6 +262,15 @@ public class RobotCommand {
                                 break;
                             }
                         }
+                        for (Mine mine: world.getMines()){
+                            if (mine.getX() == robot.getX() + i && mine.getY() == robot.getY()){
+                                object.put("direction", Direction.EAST);
+                                object.put("type", ObjectTypes.MINE);
+                                object.put("distance", i);
+                                objects.add(object);
+                                break;
+                            }
+                        }
                         if(robotFound){
                             break;
                         }
@@ -269,6 +306,15 @@ public class RobotCommand {
                                 object.put("distance", i);
                                 objects.add(object);
                                 robotFound = true;
+                                break;
+                            }
+                        }
+                        for (Mine mine: world.getMines()){
+                            if (mine.getX() == robot.getX() - i && mine.getY() == robot.getY()){
+                                object.put("direction", Direction.WEST);
+                                object.put("type", ObjectTypes.MINE);
+                                object.put("distance", i);
+                                objects.add(object);
                                 break;
                             }
                         }
@@ -339,13 +385,13 @@ public class RobotCommand {
                     finalResponse.addProperty("command","forward");
                     finalResponse.add("arguments", gson.toJsonTree(mySteps));
 
-                    NewCommand(finalResponse);
+                    this.NewCommand(finalResponse);
 
                     if(robot.getX() == x && robot.getY() == y){
                         robot.steppedOnMine();
+                        world.removeMine(mine);
+                        server.sendResponse(response.stepOnMine(robot));
                     }
-
-                    server.sendResponse(response.stepOnMine(robot));
                 }
 
                 default -> {

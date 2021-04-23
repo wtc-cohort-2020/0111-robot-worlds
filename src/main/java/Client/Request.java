@@ -102,6 +102,11 @@ public class Request {
             arguments[1] = "3";
             arguments[2] = "4";
         }
+        else if(type.equals("bomber")){
+            arguments[0] = "bomber";
+            arguments[0] = "3";
+            arguments[0] = "0";
+        }
         else {
             arguments[0] = "standard";
             arguments[1] = "3";

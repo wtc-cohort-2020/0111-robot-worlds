@@ -37,8 +37,10 @@ public class World {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        CreateObstacles();
-        CreatePits();
+//        CreateObstacles();
+//        CreatePits();
+        createDesignedObstacles();
+        createDesignedPits();
         setRobotParams();
     }
 
