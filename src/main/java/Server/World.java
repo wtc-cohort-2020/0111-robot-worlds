@@ -97,6 +97,45 @@ public class World {
         }
     }
 
+    private void createDesignedObstacles() {
+        //Make obstacle list empty
+        Obstacle newObstacle = new Obstacle(0 ,-47,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(16 ,-47,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(32 ,-47,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(44 ,-47,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(44 ,8,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(44 ,33,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(44 ,58,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(32 ,73,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(16 ,83,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(0 ,93,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(0 ,11,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(-5 ,13,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(-9 ,14,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(-13 ,8,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(-12 ,-1,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(-7 ,-9,5);
+        obstacles.add(newObstacle);
+        newObstacle = new Obstacle(0 ,-15,5);
+        obstacles.add(newObstacle);
+    }
+
+
     private void CreatePits(){
         while (pits.size()<10){
             boolean isBlocked = false;
@@ -125,6 +164,38 @@ public class World {
                 pits.add(newPit);
             }
         }
+    }
+
+    private void createDesignedPits() {
+        //Make obstacle list empty
+        Pit newPit = new Pit(-16,-47,5);
+        pits.add(newPit);
+        newPit =  new Pit(-32,-47,5);
+        pits.add(newPit);
+        newPit =  new Pit(-44,-47,5);
+        pits.add(newPit);
+        newPit =  new Pit(-44,-17,5);
+        pits.add(newPit);
+        newPit =  new Pit(-44,8,5);
+        pits.add(newPit);
+        newPit =  new Pit(-44,33,5);
+        pits.add(newPit);
+        newPit =  new Pit(-44,58,5);
+        pits.add(newPit);
+        newPit =  new Pit(-32,73,5);
+        pits.add(newPit);
+        newPit =  new Pit(-16,83,5);
+        pits.add(newPit);
+        newPit =  new Pit(-7,-9,5);
+        pits.add(newPit);
+        newPit =  new Pit(-12,-1,5);
+        pits.add(newPit);
+        newPit =  new Pit(-13,8,5);
+        pits.add(newPit);
+        newPit =  new Pit(-9,14,5);
+        pits.add(newPit);
+        newPit =  new Pit(-5,13,5);
+        pits.add(newPit);
     }
 
     public ArrayList<Obstacle> getObstacles(){
