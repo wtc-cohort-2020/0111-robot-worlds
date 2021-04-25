@@ -212,7 +212,7 @@ public class Response {
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
         state.addProperty("shields", String.valueOf(robot.getShields()));
         state.addProperty("shots", String.valueOf(robot.getNumberShots()));
-        state.addProperty("status", "REPAIRING");
+        state.addProperty("status", String.valueOf(robot.getStatus()));
 
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -231,7 +231,7 @@ public class Response {
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
         state.addProperty("shields", String.valueOf(robot.getShields()));
         state.addProperty("shots", String.valueOf(robot.getNumberShots()));
-        state.addProperty("status", "RELOADING");
+        state.addProperty("status", String.valueOf(robot.getStatus()));
 
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -250,7 +250,7 @@ public class Response {
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
         state.addProperty("shields", String.valueOf(robot.getShields()));
         state.addProperty("shots", String.valueOf(robot.getNumberShots()));
-        state.addProperty("status", "SETMINE");
+        state.addProperty("status", String.valueOf(robot.getStatus()));
         finalResponse.addProperty("result", "OK");
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -292,6 +292,25 @@ public class Response {
         state.addProperty("shots", String.valueOf(robot.getNumberShots()));
         state.addProperty("status", String.valueOf(robot.getStatus()));
 
+        finalResponse.add("data",data);
+        finalResponse.add("state",state);
+
+        return finalResponse.toString();
+    }
+
+    public String cannotSetMines(Robot robot){
+        JsonObject finalResponse = new JsonObject();
+
+        JsonObject state = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "You are not able to set mines.");
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
+        finalResponse.addProperty("result", "OK");
         finalResponse.add("data",data);
         finalResponse.add("state",state);
 

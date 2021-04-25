@@ -15,7 +15,6 @@ public class World {
     ArrayList<Obstacle> obstacles = new ArrayList<>();
     ArrayList<Pit> pits = new ArrayList<>();
     ArrayList<Mine> mines = new ArrayList<>();
-    private JsonObject fileObject;
 
     private int worldWidth;
     private int worldHeight;
@@ -33,7 +32,7 @@ public class World {
         try {
             File input = new File("src/main/java/Server/WorldSpecs.json");
             JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
-            this.fileObject = fileElement.getAsJsonObject();
+            JsonObject fileObject = fileElement.getAsJsonObject();
 
             //Extracting basic fields
 

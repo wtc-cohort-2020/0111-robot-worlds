@@ -1,5 +1,11 @@
 package Server;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,8 +15,14 @@ public class AcceptClients implements Runnable{
     private ServerSocket s;
 
     public AcceptClients(World world) throws IOException{
+        File input = new File("src/main/java/Server/WorldSpecs.json");
+        JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
+        JsonObject fileObject = fileElement.getAsJsonObject();
+        int PORT = fileObject.get("port").getAsInt();
+        System.out.println("Port");
+        System.out.println(PORT);
         this.world = world;
-        s = new ServerSocket( Server.PORT);
+        s = new ServerSocket(PORT);
         System.out.println("Server.Server running & waiting for client connections.");
     }
 

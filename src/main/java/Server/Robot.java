@@ -21,6 +21,7 @@ public class Robot {
     private Robot hitRobot;
     private final int visibility;
     private Server server;
+    public boolean canSetMines = false;
 
 
     public Robot(String name, World world,Server server, Integer shield, Integer shots){
@@ -68,7 +69,9 @@ public class Robot {
         this.numberShots = shots;
         shotDistance= 6 - numberShots;
 
-
+        if(shots == 0){
+            canSetMines = true;
+        }
     }
 
     public MovementStatus moveForward(){

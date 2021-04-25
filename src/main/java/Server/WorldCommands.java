@@ -29,6 +29,7 @@ public class WorldCommands{
                 }
 
                 case "robots" ->{
+                    System.out.println("Robots:");
                     for(Robot robot: world.getRobots()){
                         System.out.println("\n" + robot.getName() +", state:");
                         System.out.println("   Position: [" + robot.getX() +

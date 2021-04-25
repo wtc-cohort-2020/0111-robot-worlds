@@ -356,6 +356,8 @@ public class RobotCommand {
                         server.sendResponse(response.State(robot));
                         break;
                     }
+                    robot.setStatus(RobotStatus.RELOADING);
+                    server.sendResponse(response.State(robot));
                     robot.reload();
                     server.sendResponse(response.Reload(robot));
                 }
@@ -365,17 +367,25 @@ public class RobotCommand {
                         server.sendResponse(response.State(robot));
                         break;
                     }
+                    robot.setStatus(RobotStatus.REPAIRING);
+                    server.sendResponse(response.State(robot));
                     robot.repair();
                     server.sendResponse(response.Repair(robot));
                 }
 
                 case "mine" -> {
+                    if(!robot.canSetMines){
+                        server.sendResponse(response.cannotSetMines(robot));
+                        break;
+                    }
                     int x = robot.getX();
                     int y = robot.getY();
                     Mine mine = new Mine(x, y);
                     world.addMine(mine);
-                    server.sendResponse(response.setMine(robot));
+                    robot.setStatus(RobotStatus.SETMINE);
+                    server.sendResponse(response.State(robot));
                     robot.setMine();
+                    server.sendResponse(response.setMine(robot));
 
                     String[] mySteps = new String[1];
                     mySteps[0] = String.valueOf(1);
