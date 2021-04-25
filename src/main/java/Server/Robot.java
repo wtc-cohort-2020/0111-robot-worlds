@@ -20,7 +20,7 @@ public class Robot {
     private int distance;
     private Robot hitRobot;
     private final int visibility;
-    private Server server;
+    private final Server server;
     public boolean canSetMines = false;
 
 
@@ -376,7 +376,7 @@ public class Robot {
                         distance = i;
                         hitRobot = robot;
                         return true;
-                    };
+                    }
                 }
 
             }

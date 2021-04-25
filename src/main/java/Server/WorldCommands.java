@@ -1,7 +1,5 @@
 package Server;
 
-import com.google.gson.JsonObject;
-
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -24,9 +22,7 @@ public class WorldCommands{
             input = scanner.nextLine();
             splitCommand(input);
             switch (command.toLowerCase(Locale.ROOT)){
-                case "off", "quit", "exit" ->{
-                    flag = false;
-                }
+                case "off", "quit", "exit" -> flag = false;
 
                 case "robots" ->{
                     System.out.println("Robots:");
@@ -83,9 +79,7 @@ public class WorldCommands{
                     }
                 }
 
-                default -> {
-                    System.out.println("Master, I did not understand this request: " + input);
-                }
+                default -> System.out.println("Master, I did not understand this request: " + input);
             }
         }
     }

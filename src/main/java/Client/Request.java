@@ -38,11 +38,10 @@ public class Request {
 
     public String fire(String name) {
         JsonObject finalResponse = new JsonObject();
-        int[] nothing = new int[0];
 
         finalResponse.addProperty("robot",name);
         finalResponse.addProperty("command","fire");
-        finalResponse.addProperty("arguments", Arrays.toString(nothing));
+        finalResponse.addProperty("arguments", Arrays.toString(new int[0]));
 
 
         return finalResponse.toString();
@@ -50,11 +49,10 @@ public class Request {
 
     public String repair(String name) {
         JsonObject finalResponse = new JsonObject();
-        int[] nothing = new int[0];
 
         finalResponse.addProperty("robot",name);
         finalResponse.addProperty("command","repair");
-        finalResponse.addProperty("arguments", Arrays.toString(nothing));
+        finalResponse.addProperty("arguments", Arrays.toString(new int[0]));
 
 
         return finalResponse.toString();
@@ -62,11 +60,10 @@ public class Request {
 
     public String reload(String name) {
         JsonObject finalResponse = new JsonObject();
-        int[] nothing = new int[0];
 
         finalResponse.addProperty("robot",name);
         finalResponse.addProperty("command","reload");
-        finalResponse.addProperty("arguments", Arrays.toString(nothing));
+        finalResponse.addProperty("arguments", Arrays.toString(new int[0]));
 
 
         return finalResponse.toString();
@@ -74,11 +71,10 @@ public class Request {
 
     public String setMine(String name) {
         JsonObject finalResponse = new JsonObject();
-        int[] nothing = new int[0];
 
         finalResponse.addProperty("robot",name);
         finalResponse.addProperty("command","mine");
-        finalResponse.addProperty("arguments", Arrays.toString(nothing));
+        finalResponse.addProperty("arguments", Arrays.toString(new int[0]));
 
         return finalResponse.toString();
     }
@@ -91,26 +87,27 @@ public class Request {
 
         String[] arguments = new String[3];
 
-        if (type.equals("sniper")) {
-            arguments[0] = "sniper";
-            arguments[1] = "3";
-            arguments[2] = "2";
-
-        }
-        else if (type.equals("pistol")) {
-            arguments[0] = "pistol";
-            arguments[1] = "3";
-            arguments[2] = "4";
-        }
-        else if(type.equals("bomber")){
-            arguments[0] = "bomber";
-            arguments[1] = "3";
-            arguments[2] = "0";
-        }
-        else {
-            arguments[0] = "standard";
-            arguments[1] = "3";
-            arguments[2] = "3";
+        switch (type) {
+            case "sniper" -> {
+                arguments[0] = "sniper";
+                arguments[1] = "2";
+                arguments[2] = "1";
+            }
+            case "pistol" -> {
+                arguments[0] = "pistol";
+                arguments[1] = "5";
+                arguments[2] = "4";
+            }
+            case "bomber" -> {
+                arguments[0] = "bomber";
+                arguments[1] = "4";
+                arguments[2] = "0";
+            }
+            default -> {
+                arguments[0] = "standard";
+                arguments[1] = "3";
+                arguments[2] = "3";
+            }
         }
         finalResponse.add("arguments", gson.toJsonTree(arguments));
 

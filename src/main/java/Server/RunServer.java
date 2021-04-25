@@ -3,7 +3,7 @@ package Server;
 import java.io.*;
 
 public class RunServer {
-    public static void main(String[] args) throws ClassNotFoundException, IOException {
+    public static void main(String[] args) throws IOException {
 
         World world = new World();
         System.out.println("Obstacles");

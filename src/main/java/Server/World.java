@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class World {
     ArrayList<Robot> allRobots = new ArrayList<>();
@@ -82,29 +81,6 @@ public class World {
         allRobots.remove(robot);
     }
 
-    private void CreateObstacles(){
-        while (obstacles.size()<10){
-            boolean isBlocked = false;
-            int randomX = ThreadLocalRandom.current().nextInt(-(worldWidth/2)/5,
-                    (worldWidth/2)/5);
-            int randomY = ThreadLocalRandom.current().nextInt(-(worldHeight/2)/5,
-                    (worldHeight/2)/5);
-
-            Obstacle newObstacle = new Obstacle(randomX*5, randomY*5, 5);
-
-            for(Obstacle obstFromList: obstacles){
-                if(obstFromList.blocksPosition(randomX*5, randomY*5)){
-                    isBlocked = true;
-                    break;
-                }
-            }
-
-            if(!isBlocked){
-                obstacles.add(newObstacle);
-            }
-        }
-    }
-
     private void createDesignedObstacles() {
         //Make obstacle list empty
         Obstacle newObstacle = new Obstacle(0 ,-47,5);
@@ -141,37 +117,6 @@ public class World {
         obstacles.add(newObstacle);
         newObstacle = new Obstacle(0 ,-15,5);
         obstacles.add(newObstacle);
-    }
-
-
-    private void CreatePits(){
-        while (pits.size()<10){
-            boolean isBlocked = false;
-            int randomX = ThreadLocalRandom.current().nextInt(-(worldWidth/2)/5,
-                    (worldWidth/2)/5);
-            int randomY = ThreadLocalRandom.current().nextInt(-(worldHeight/2)/5,
-                    (worldHeight/2)/5);
-
-            Pit newPit = new Pit(randomX*5, randomY*5, 5);
-
-            for(Pit pitFromList: pits){
-                if(pitFromList.blocksPosition(randomX*5, randomY*5)){
-                    isBlocked = true;
-                    break;
-                }
-            }
-
-            for(Obstacle obstFromList: obstacles){
-                if(obstFromList.blocksPosition(randomX*5, randomY*5)){
-                    isBlocked = true;
-                    break;
-                }
-            }
-
-            if(!isBlocked){
-                pits.add(newPit);
-            }
-        }
     }
 
     private void createDesignedPits() {
@@ -215,18 +160,6 @@ public class World {
     }
 
     public ArrayList<Robot> getRobots() { return allRobots; }
-
-    public HashMap<String, Integer> getSniper() {
-        return sniperRobot;
-    }
-
-    public HashMap<String, Integer> getStandard() {
-        return standardRobot;
-    }
-
-    public HashMap<String, Integer> getPistol() {
-        return pistolRobot;
-    }
 
     public void AddRobot(Robot robot){
         allRobots.add(robot);

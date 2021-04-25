@@ -1,10 +1,10 @@
 package Server;
 
 public class Pit {
-    private int bottomLeftX;
-    private int bottomLeftY;
+    private final int bottomLeftX;
+    private final int bottomLeftY;
 
-    private int size;
+    private final int size;
 
 
     public Pit(int bottomLeftX, int bottomLeftY, int size){

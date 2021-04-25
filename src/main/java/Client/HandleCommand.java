@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 
 public class HandleCommand {
-    private String robotType;
+    private final String robotType;
     private final String robotName;
     private final PrintStream out;
     private String command;
@@ -74,9 +74,7 @@ public class HandleCommand {
         String [] commandAndArgs = input.split(" ");
 
         switch (commandAndArgs.length) {
-            case 1 -> {
-                command = commandAndArgs[0];
-            }
+            case 1 -> command = commandAndArgs[0];
             case 2 -> {
                 command = commandAndArgs[0];
                 arguments[0] = commandAndArgs[1];

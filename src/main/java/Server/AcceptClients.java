@@ -12,7 +12,7 @@ import java.net.Socket;
 
 public class AcceptClients implements Runnable{
     private final World world;
-    private ServerSocket s;
+    private final ServerSocket s;
 
     public AcceptClients(World world) throws IOException{
         File input = new File("src/main/java/Server/WorldSpecs.json");
