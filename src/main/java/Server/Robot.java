@@ -1,28 +1,32 @@
 package Server;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Robot {
     private int x;
     private int y;
-    private String name;
+    private final String name;
     private RobotStatus status;
     private Direction currentDirection;
     private final World world;
     private final Integer shotDistance;
     private Integer numberShots;
-    private Random random = new Random();
-    private int shields = 3;
-    private final Integer RELOAD_TIME = 5;
-    private final Integer REPAIR_TIME = 4;
-    private final Integer SET_MINE_TIME = 4;
+    private int shields;
+    private final Integer RELOAD_TIME;
+    private final Integer REPAIR_TIME;
+    private final Integer SET_MINE_TIME;
     private int distance;
     private Robot hitRobot;
+    private int visibility;
 
 
     public Robot(String name, World world, Integer shield, Integer shots){
+        RELOAD_TIME = world.getReload();
+        REPAIR_TIME = world.getRepairShield();
+        SET_MINE_TIME = world.getSteMineTime();
+        visibility = world.getVisibility();
+
         this.world = world;
         boolean positionClear = false;
         while (!positionClear){
@@ -51,29 +55,18 @@ public class Robot {
         this.status = RobotStatus.NORMAL;
 
         world.AddRobot(this);
+        if(shield > world.getMaxShield()){
+            this.shields = world.getMaxShield();
+        }
+        else {
+            this.shields = shield;
+        }
 
-        this.shields = shield;
         this.numberShots = shots;
         shotDistance= 6 - numberShots;
 
 
     }
-
-//    public Robot(String name, World world){
-//        this.y = 0;
-//        this.x = 0;
-//        this.name = name;
-//        this.currentDirection = Direction.NORTH;
-//        this.status = RobotStatus.NORMAL;
-//        this.world = world;
-//        world.AddRobot(this);
-//
-//        this.shields = 3;
-//        this.numberShots = 3;
-//        shotDistance= 6 - numberShots;
-//
-//
-//    }
 
     public MovementStatus moveForward(){
         if(currentDirection.equals(Direction.NORTH)){
@@ -489,4 +482,23 @@ public class Robot {
         shields++;
     }
 
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public Integer getRELOAD_TIME() {
+        return RELOAD_TIME;
+    }
+
+    public Integer getSET_MINE_TIME() {
+        return SET_MINE_TIME;
+    }
+
+    public Integer getShotDistance() {
+        return shotDistance;
+    }
+
+    public Integer getREPAIR_TIME() {
+        return REPAIR_TIME;
+    }
 }

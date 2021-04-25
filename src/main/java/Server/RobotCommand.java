@@ -34,6 +34,7 @@ public class RobotCommand {
 
                 case "launch" -> {
                     if(!isInWorld){
+
                         isInWorld = true;
                         robot = new Robot(newCommand.get("robot").getAsString(), world,
                                 newCommand.get("arguments").getAsJsonArray().get(1).getAsInt(), newCommand.get("arguments").getAsJsonArray().get(2).getAsInt());
@@ -133,7 +134,7 @@ public class RobotCommand {
                         break;
                     }
 
-                    int range = 10;
+                    int range = world.getVisibility();
                     HashMap<String, Object> object = new HashMap<>();
                     List<HashMap<String, Object>> objects = new ArrayList<>();
                     boolean robotFound = false;
@@ -346,7 +347,7 @@ public class RobotCommand {
                                 response.HitRobot(robot.getDistance(), robot.getNumberShots(),
                                         robot.returnHitRobot()));
                     } else {
-                        server.sendResponse(response.MissedRobot(robot.getNumberShots()));
+                        server.sendResponse(response.MissedRobot(robot));
                     }
                 }
 
@@ -356,7 +357,7 @@ public class RobotCommand {
                         break;
                     }
                     robot.reload();
-                    server.sendResponse(response.Reload());
+                    server.sendResponse(response.Reload(robot));
                 }
 
                 case "repair" -> {
@@ -365,7 +366,7 @@ public class RobotCommand {
                         break;
                     }
                     robot.repair();
-                    server.sendResponse(response.Repair());
+                    server.sendResponse(response.Repair(robot));
                 }
 
                 case "mine" -> {
@@ -373,7 +374,7 @@ public class RobotCommand {
                     int y = robot.getY();
                     Mine mine = new Mine(x, y);
                     world.addMine(mine);
-                    server.sendResponse(response.setMine());
+                    server.sendResponse(response.setMine(robot));
                     robot.setMine();
 
                     String[] mySteps = new String[1];
@@ -405,7 +406,7 @@ public class RobotCommand {
             }
         }
         catch (NullPointerException e) {
-            e.printStackTrace();
+            server.sendResponse(response.InvalidArguments());
         }
 
     }

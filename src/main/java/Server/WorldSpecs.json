@@ -1,4 +1,9 @@
 {
   "height": 200,
-  "width": 100
-  }
+  "width": 100,
+  "maxShield": 5,
+  "reload": 5,
+  "mine": 6,
+  "repair": 6,
+  "visibility": 10
+}

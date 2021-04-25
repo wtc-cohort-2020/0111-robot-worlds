@@ -9,11 +9,19 @@ import java.util.List;
 
 public class Response {
     public String UnsupportedCommand(){
-        return "{ \"result\": \"ERROR\", \"data\": { message: \"Unsupported command\" } }";
+        JsonObject finalResponse = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "Unsupported command");
+        finalResponse.addProperty("result", "ERROR");
+        return finalResponse.toString();
     }
 
     public String InvalidArguments(){
-        return "{ \"result\": \"ERROR\", \"data\": { message: \"Could not parse arguments\" } }";
+        JsonObject finalResponse = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "Could not parse arguments");
+        finalResponse.addProperty("result", "ERROR");
+        return finalResponse.toString();
     }
 
     public String Look(Robot robot, List<HashMap<String, Object>> myObjects){
@@ -25,7 +33,9 @@ public class Response {
         data.addProperty("objects", gson.toJson(myObjects));
         state.addProperty("position", Arrays.toString(position));
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
-        state.addProperty("status", "NORMAL");
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
         finalResponse.addProperty("result", "OK");
         finalResponse.add("state", state);
         finalResponse.add("data", data);
@@ -40,7 +50,9 @@ public class Response {
         data.addProperty("message", "Done");
         state.addProperty("position", Arrays.toString(position));
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
-        state.addProperty("status", "NORMAL");
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
         finalResponse.addProperty("result", "OK");
         finalResponse.add("state", state);
         finalResponse.add("data", data);
@@ -55,7 +67,9 @@ public class Response {
         data.addProperty("message", "Obstructed");
         state.addProperty("position", Arrays.toString(position));
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
-        state.addProperty("status", "NORMAL");
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
         finalResponse.addProperty("result", "OK");
         finalResponse.add("state", state);
         finalResponse.add("data", data);
@@ -82,6 +96,8 @@ public class Response {
         data.addProperty("message", "DONE");
         state.addProperty("position", Arrays.toString(position));
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
         state.addProperty("status", String.valueOf(robot.getStatus()));
         finalResponse.addProperty("result", "OK");
         finalResponse.add("state", state);
@@ -94,6 +110,8 @@ public class Response {
         JsonObject state = new JsonObject();
         state.addProperty("position", Arrays.toString(position));
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
         state.addProperty("status", String.valueOf(robot.getStatus()));
         JsonObject finalResponse = new JsonObject();
         finalResponse.add("state", state);
@@ -101,7 +119,26 @@ public class Response {
     }
 
     public String LaunchSuccess(Robot robot){
-        return State(robot);
+        int[] position = new int[]{robot.getX(), robot.getY()};
+        JsonObject finalResponse = new JsonObject();
+        JsonObject state = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("position", Arrays.toString(position));
+        data.addProperty("visibility", String.valueOf(robot.getVisibility()));
+        data.addProperty("reload", String.valueOf(robot.getRELOAD_TIME()));
+        data.addProperty("repair", String.valueOf(robot.getREPAIR_TIME()));
+        data.addProperty("mine", String.valueOf(robot.getSET_MINE_TIME()));
+        data.addProperty("shields", String.valueOf(robot.getShields()));
+
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
+        finalResponse.addProperty("result", "OK");
+        finalResponse.add("state", state);
+        finalResponse.add("data", data);
+        return finalResponse.toString();
     }
 
     public String fireNoAmmo(){
@@ -124,8 +161,6 @@ public class Response {
 
         finalResponse.addProperty("result","OK");
 
-
-
         int[] position = new int[]{robot.getX(),robot.getY()};
         state_hit.addProperty("position", Arrays.toString(position));
         state_hit.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
@@ -147,26 +182,37 @@ public class Response {
         return finalResponse.toString();
     }
 
-    public String MissedRobot(int shots) {
+    public String MissedRobot(Robot robot) {
         JsonObject finalResponse = new JsonObject();
 
         JsonObject state = new JsonObject();
         JsonObject data = new JsonObject();
         data.addProperty("message", "Miss");
-        state.addProperty("shots", String.valueOf(shots));
+
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
 
         finalResponse.add("state", state);
         finalResponse.add("data", data);
         return finalResponse.toString();
     }
 
-    public String Repair (){
+    public String Repair (Robot robot){
         JsonObject finalResponse = new JsonObject();
 
         JsonObject state = new JsonObject();
         JsonObject data = new JsonObject();
         data.addProperty("message", "Done");
-        state.addProperty("status","REPAIR");
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
 
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -174,13 +220,18 @@ public class Response {
         return finalResponse.toString();
     }
 
-    public String Reload() {
+    public String Reload(Robot robot) {
         JsonObject finalResponse = new JsonObject();
 
         JsonObject state = new JsonObject();
         JsonObject data = new JsonObject();
         data.addProperty("message", "Done");
-        state.addProperty("status","RELOAD");
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", "RELOADING");
 
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -188,13 +239,18 @@ public class Response {
         return finalResponse.toString();
     }
 
-    public String setMine(){
+    public String setMine(Robot robot){
         JsonObject finalResponse = new JsonObject();
 
         JsonObject state = new JsonObject();
         JsonObject data = new JsonObject();
         data.addProperty("message", "Done");
-        state.addProperty("status","SETMINE");
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
         finalResponse.addProperty("result", "OK");
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -205,13 +261,39 @@ public class Response {
     public String stepOnMine(Robot robot){
         JsonObject finalResponse = new JsonObject();
 
-        JsonObject status = new JsonObject();
+        JsonObject state = new JsonObject();
         JsonObject data = new JsonObject();
         data.addProperty("message", "You stepped on a mine.");
-        status.addProperty("status", String.valueOf(robot.getStatus()));
+
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
 
         finalResponse.add("data",data);
-        finalResponse.add("state",status);
+        finalResponse.add("state",state);
+
+        return finalResponse.toString();
+    }
+
+    public String beenShot(Robot robot){
+        JsonObject finalResponse = new JsonObject();
+
+        JsonObject state = new JsonObject();
+        JsonObject data = new JsonObject();
+        data.addProperty("message", "You have been shot.");
+
+        int[] position = new int[]{robot.getX(),robot.getY()};
+        state.addProperty("position", Arrays.toString(position));
+        state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
+        state.addProperty("shields", String.valueOf(robot.getShields()));
+        state.addProperty("shots", String.valueOf(robot.getNumberShots()));
+        state.addProperty("status", String.valueOf(robot.getStatus()));
+
+        finalResponse.add("data",data);
+        finalResponse.add("state",state);
 
         return finalResponse.toString();
     }

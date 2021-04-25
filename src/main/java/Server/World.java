@@ -17,8 +17,13 @@ public class World {
     ArrayList<Mine> mines = new ArrayList<>();
     private JsonObject fileObject;
 
-    int worldWidth;
-    int worldHeight;
+    private int worldWidth;
+    private int worldHeight;
+    private int visibility;
+    private int repairShield;
+    private int reload;
+    private int steMineTime;
+    private int maxShield;
 
     HashMap<String, Integer> sniperRobot;
     HashMap<String, Integer> pistolRobot;
@@ -34,11 +39,15 @@ public class World {
 
             worldHeight = fileObject.get("height").getAsInt();
             worldWidth = fileObject.get("width").getAsInt();
+            visibility = fileObject.get("visibility").getAsInt();
+            repairShield = fileObject.get("repair").getAsInt();
+            reload = fileObject.get("reload").getAsInt();
+            steMineTime = fileObject.get("mine").getAsInt();
+            maxShield = fileObject.get("maxShield").getAsInt();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-//        CreateObstacles();
-//        CreatePits();
         createDesignedObstacles();
         createDesignedPits();
         setRobotParams();
@@ -242,5 +251,25 @@ public class World {
 
     public ArrayList<Mine> getMines(){
         return mines;
+    }
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public int getReload() {
+        return reload;
+    }
+
+    public int getMaxShield() {
+        return maxShield;
+    }
+
+    public int getSteMineTime() {
+        return steMineTime;
+    }
+
+    public int getRepairShield() {
+        return repairShield;
     }
 }
