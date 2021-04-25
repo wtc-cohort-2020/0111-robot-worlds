@@ -212,7 +212,7 @@ public class Response {
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
         state.addProperty("shields", String.valueOf(robot.getShields()));
         state.addProperty("shots", String.valueOf(robot.getNumberShots()));
-        state.addProperty("status", String.valueOf(robot.getStatus()));
+        state.addProperty("status", "REPAIRING");
 
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -250,7 +250,7 @@ public class Response {
         state.addProperty("direction", String.valueOf(robot.getCurrentDirection()));
         state.addProperty("shields", String.valueOf(robot.getShields()));
         state.addProperty("shots", String.valueOf(robot.getNumberShots()));
-        state.addProperty("status", String.valueOf(robot.getStatus()));
+        state.addProperty("status", "SETMINE");
         finalResponse.addProperty("result", "OK");
         finalResponse.add("data",data);
         finalResponse.add("state",state);
@@ -278,7 +278,7 @@ public class Response {
         return finalResponse.toString();
     }
 
-    public String beenShot(Robot robot){
+    public String hasBeenShot(Robot robot){
         JsonObject finalResponse = new JsonObject();
 
         JsonObject state = new JsonObject();

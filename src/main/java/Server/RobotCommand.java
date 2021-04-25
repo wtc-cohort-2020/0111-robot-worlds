@@ -36,7 +36,7 @@ public class RobotCommand {
                     if(!isInWorld){
 
                         isInWorld = true;
-                        robot = new Robot(newCommand.get("robot").getAsString(), world,
+                        robot = new Robot(newCommand.get("robot").getAsString(), world, server,
                                 newCommand.get("arguments").getAsJsonArray().get(1).getAsInt(), newCommand.get("arguments").getAsJsonArray().get(2).getAsInt());
                         server.sendResponse(response.LaunchSuccess(robot));
                         server.setRobot(robot);

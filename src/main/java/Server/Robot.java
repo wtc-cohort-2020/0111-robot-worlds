@@ -13,19 +13,22 @@ public class Robot {
     private final Integer shotDistance;
     private Integer numberShots;
     private int shields;
+    private final int shieldNumb;
     private final Integer RELOAD_TIME;
     private final Integer REPAIR_TIME;
     private final Integer SET_MINE_TIME;
     private int distance;
     private Robot hitRobot;
-    private int visibility;
+    private final int visibility;
+    private Server server;
 
 
-    public Robot(String name, World world, Integer shield, Integer shots){
+    public Robot(String name, World world,Server server, Integer shield, Integer shots){
         RELOAD_TIME = world.getReload();
         REPAIR_TIME = world.getRepairShield();
         SET_MINE_TIME = world.getSteMineTime();
         visibility = world.getVisibility();
+        this.server = server;
 
         this.world = world;
         boolean positionClear = false;
@@ -61,7 +64,7 @@ public class Robot {
         else {
             this.shields = shield;
         }
-
+        shieldNumb = shields;
         this.numberShots = shots;
         shotDistance= 6 - numberShots;
 
@@ -312,6 +315,7 @@ public class Robot {
     }
 
     public void setMine(){
+        this.status = RobotStatus.SETMINE;
         int rememberShield = shields;
         shields = 0;
         try {
@@ -322,6 +326,7 @@ public class Robot {
             System.out.println("Timeout occurred.");
         }
         shields = rememberShield;
+        this.status = RobotStatus.NORMAL;
     }
 
     public boolean beenHit () {
@@ -341,6 +346,7 @@ public class Robot {
                             robot.setStatus(RobotStatus.DEAD);
                             world.RemoveRobot(robot);
                         }
+                        robot.notifyHasBeenShot();
                         distance = i;
                         hitRobot = robot;
                         return true;
@@ -363,6 +369,7 @@ public class Robot {
                             robot.setStatus(RobotStatus.DEAD);
                             world.RemoveRobot(robot);
                         }
+                        robot.notifyHasBeenShot();
                         distance = i;
                         hitRobot = robot;
                         return true;
@@ -384,6 +391,7 @@ public class Robot {
                             robot.setStatus(RobotStatus.DEAD);
                             world.RemoveRobot(robot);
                         }
+                        robot.notifyHasBeenShot();
                         distance = i;
                         hitRobot= robot;
                         return true;
@@ -405,6 +413,7 @@ public class Robot {
                             robot.setStatus(RobotStatus.DEAD);
                             world.RemoveRobot(robot);
                         }
+                        robot.notifyHasBeenShot();
                         distance = i;
                         hitRobot = robot;
                         return true;
@@ -415,7 +424,7 @@ public class Robot {
         }
 
         return false;
-        // if shield-strength equals 0, robot is dead.
+        // if shield-strength smaller than 0, robot is dead.
 
     }
 
@@ -425,7 +434,7 @@ public class Robot {
             //wait repair-time
             TimeUnit.SECONDS.sleep(REPAIR_TIME);
             // increase shield to max.
-            shields = 3;
+            shields = shieldNumb;
         }
 
         catch (InterruptedException e) {
@@ -478,10 +487,6 @@ public class Robot {
         shields--;
     }
 
-    public void increaseShields() {
-        shields++;
-    }
-
     public int getVisibility() {
         return visibility;
     }
@@ -494,11 +499,12 @@ public class Robot {
         return SET_MINE_TIME;
     }
 
-    public Integer getShotDistance() {
-        return shotDistance;
-    }
-
     public Integer getREPAIR_TIME() {
         return REPAIR_TIME;
+    }
+
+    public void notifyHasBeenShot(){
+        Response response = new Response();
+        server.sendResponse(response.hasBeenShot(this));
     }
 }
