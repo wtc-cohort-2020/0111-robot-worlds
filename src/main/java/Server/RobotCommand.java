@@ -33,6 +33,21 @@ public class RobotCommand {
             switch (newCommand.get("command").getAsString()) {
 
                 case "launch" -> {
+                    boolean nameRepeat = false;
+                    if(world.getRobots().size() >= 8){
+                        server.sendResponse(response.LaunchNoSpace());
+                        break;
+                    }
+                    for (Robot robot: world.getRobots()){
+                        if(robot.getName().equals(newCommand.get("robot").getAsString())){
+                            server.sendResponse(response.LaunchNameTaken());
+                            nameRepeat = true;
+                            break;
+                        }
+                    }
+                    if(nameRepeat){
+                        break;
+                    }
                     if(!isInWorld){
 
                         isInWorld = true;
@@ -415,7 +430,7 @@ public class RobotCommand {
                 }
             }
         }
-        catch (NullPointerException e) {
+        catch (UnsupportedOperationException | NullPointerException | NumberFormatException e) {
             server.sendResponse(response.InvalidArguments());
         }
 

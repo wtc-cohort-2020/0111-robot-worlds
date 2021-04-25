@@ -19,8 +19,6 @@ public class AcceptClients implements Runnable{
         JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
         JsonObject fileObject = fileElement.getAsJsonObject();
         int PORT = fileObject.get("port").getAsInt();
-        System.out.println("Port");
-        System.out.println(PORT);
         this.world = world;
         s = new ServerSocket(PORT);
         System.out.println("Server.Server running & waiting for client connections.");

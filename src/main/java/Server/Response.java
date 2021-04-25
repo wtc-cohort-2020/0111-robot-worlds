@@ -13,6 +13,7 @@ public class Response {
         JsonObject data = new JsonObject();
         data.addProperty("message", "Unsupported command");
         finalResponse.addProperty("result", "ERROR");
+        finalResponse.add("data", data);
         return finalResponse.toString();
     }
 
@@ -21,6 +22,7 @@ public class Response {
         JsonObject data = new JsonObject();
         data.addProperty("message", "Could not parse arguments");
         finalResponse.addProperty("result", "ERROR");
+        finalResponse.add("data", data);
         return finalResponse.toString();
     }
 
