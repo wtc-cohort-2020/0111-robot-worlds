@@ -152,7 +152,7 @@ public class RobotCommand {
                     int range = world.getVisibility();
                     HashMap<String, Object> object = new HashMap<>();
                     List<HashMap<String, Object>> objects = new ArrayList<>();
-                    boolean robotFound = false;
+                    boolean objectFound = false;
                     for (int i = 1; i <= range; i++) {
                         if(robot.getY() + i == world.getWorldHeight()/2){
                             object.put("direction", Direction.NORTH);
@@ -181,25 +181,29 @@ public class RobotCommand {
                                 object.put("type", ObjectTypes.ROBOT);
                                 object.put("distance", i);
                                 objects.add(object);
-                                robotFound = true;
+                                objectFound = true;
                                 break;
                             }
                         }
-                        for (Mine mine: world.getMines()){
-                            if (mine.getX() == robot.getX() && mine.getY() == robot.getY() + i){
-                                object.put("direction", Direction.NORTH);
-                                object.put("type", ObjectTypes.MINE);
-                                object.put("distance", i);
-                                objects.add(object);
-                                break;
+                        if(i <= range/4){
+                            for (Mine mine: world.getMines()){
+                                if (mine.getX() == robot.getX() && mine.getY() == robot.getY() + i){
+                                    object.put("direction", Direction.NORTH);
+                                    object.put("type", ObjectTypes.MINE);
+                                    object.put("distance", i);
+                                    objects.add(object);
+                                    objectFound = true;
+                                    break;
+                                }
                             }
                         }
-                        if(robotFound){
+
+                        if(objectFound){
                             break;
                         }
                     }
                     object = new HashMap<>();
-                    robotFound = false;
+                    objectFound = false;
                     for (int i = 1; i <= range; i++) {
                         if(robot.getY() - i == -world.getWorldHeight()/2){
                             object.put("direction", Direction.SOUTH);
@@ -228,25 +232,29 @@ public class RobotCommand {
                                 object.put("type", ObjectTypes.ROBOT);
                                 object.put("distance", i);
                                 objects.add(object);
-                                robotFound = true;
+                                objectFound = true;
                                 break;
                             }
                         }
-                        for (Mine mine: world.getMines()){
-                            if (mine.getX() == robot.getX() && mine.getY() == robot.getY() - i){
-                                object.put("direction", Direction.SOUTH);
-                                object.put("type", ObjectTypes.MINE);
-                                object.put("distance", i);
-                                objects.add(object);
-                                break;
+                        if(i <= range/4){
+                            for (Mine mine: world.getMines()){
+                                if (mine.getX() == robot.getX() && mine.getY() == robot.getY() - i){
+                                    object.put("direction", Direction.SOUTH);
+                                    object.put("type", ObjectTypes.MINE);
+                                    object.put("distance", i);
+                                    objects.add(object);
+                                    objectFound = true;
+                                    break;
+                                }
                             }
                         }
-                        if(robotFound){
+
+                        if(objectFound){
                             break;
                         }
                     }
                     object = new HashMap<>();
-                    robotFound = false;
+                    objectFound = false;
                     for (int i = 1; i <= range; i++) {
                         if(robot.getX() + i == world.getWorldWidth()/2){
                             object.put("direction", Direction.EAST);
@@ -275,25 +283,29 @@ public class RobotCommand {
                                 object.put("type", ObjectTypes.ROBOT);
                                 object.put("distance", i);
                                 objects.add(object);
-                                robotFound = true;
+                                objectFound = true;
                                 break;
                             }
                         }
-                        for (Mine mine: world.getMines()){
-                            if (mine.getX() == robot.getX() + i && mine.getY() == robot.getY()){
-                                object.put("direction", Direction.EAST);
-                                object.put("type", ObjectTypes.MINE);
-                                object.put("distance", i);
-                                objects.add(object);
-                                break;
+                        if(i <= range/4){
+                            for (Mine mine: world.getMines()){
+                                if (mine.getX() == robot.getX() + i && mine.getY() == robot.getY()){
+                                    object.put("direction", Direction.EAST);
+                                    object.put("type", ObjectTypes.MINE);
+                                    object.put("distance", i);
+                                    objects.add(object);
+                                    objectFound = true;
+                                    break;
+                                }
                             }
                         }
-                        if(robotFound){
+
+                        if(objectFound){
                             break;
                         }
                     }
                     object = new HashMap<>();
-                    robotFound = false;
+                    objectFound = false;
                     for (int i = 1; i <= range; i++) {
                         if(robot.getX() - i == -world.getWorldWidth()/2){
                             object.put("direction", Direction.WEST);
@@ -322,20 +334,24 @@ public class RobotCommand {
                                 object.put("type", ObjectTypes.ROBOT);
                                 object.put("distance", i);
                                 objects.add(object);
-                                robotFound = true;
+                                objectFound = true;
                                 break;
                             }
                         }
-                        for (Mine mine: world.getMines()){
-                            if (mine.getX() == robot.getX() - i && mine.getY() == robot.getY()){
-                                object.put("direction", Direction.WEST);
-                                object.put("type", ObjectTypes.MINE);
-                                object.put("distance", i);
-                                objects.add(object);
-                                break;
+                        if(i <= range/4){
+                            for (Mine mine: world.getMines()){
+                                if (mine.getX() == robot.getX() - i && mine.getY() == robot.getY()){
+                                    object.put("direction", Direction.WEST);
+                                    object.put("type", ObjectTypes.MINE);
+                                    object.put("distance", i);
+                                    objects.add(object);
+                                    objectFound = true;
+                                    break;
+                                }
                             }
                         }
-                        if(robotFound){
+
+                        if(objectFound){
                             break;
                         }
                     }

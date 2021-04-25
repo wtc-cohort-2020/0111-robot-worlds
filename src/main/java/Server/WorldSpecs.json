@@ -5,6 +5,6 @@
   "reload": 5,
   "mine": 6,
   "repair": 6,
-  "visibility": 10,
+  "visibility": 12,
   "port": 1999
 }
