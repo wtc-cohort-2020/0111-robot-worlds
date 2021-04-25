@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import java.util.Arrays;
 
 public class Request {
+    //This class contains all the appropriate requests to be sent to the server
+
     public String forward(String steps, String name) {
         String[] mySteps = new String[1];
         mySteps[0] = steps;

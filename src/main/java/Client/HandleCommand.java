@@ -18,7 +18,9 @@ public class HandleCommand {
         this.out = out;
     }
 
+
     public void newCommand(String input){
+        //This function sends the appropriate message to the sever according to user input
         splitCommand(input);
         switch (command){
             case "fire" -> {
@@ -71,6 +73,7 @@ public class HandleCommand {
     }
 
     private void splitCommand(String input) {
+        //This function splits the input from the user into the command and arguments
         String [] commandAndArgs = input.split(" ");
 
         switch (commandAndArgs.length) {

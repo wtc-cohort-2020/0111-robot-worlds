@@ -11,6 +11,7 @@ public class ReceiveMessages implements Runnable{
     }
 
     public void run() {
+        //This function receives messages from the server and prints it out to the terminal
         boolean flag = true;
         while (flag){
             try {
