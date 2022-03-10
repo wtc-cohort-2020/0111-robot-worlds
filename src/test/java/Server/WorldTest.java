@@ -28,13 +28,13 @@ public class WorldTest {
 
     @Test
     void testGetObstacles(){
-        assertEquals(10, randomObstacles.getObstacles().size());
+        assertEquals(17, randomObstacles.getObstacles().size());
         assertEquals(obstacles, customObstacles.getObstacles());
     }
 
     @Test
     void testGetPits(){
-        assertEquals(10, randomObstacles.getPits().size());
+        assertEquals(14, randomObstacles.getPits().size());
         assertEquals(pits, customObstacles.getPits());
     }
 }

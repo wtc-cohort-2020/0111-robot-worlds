@@ -9,13 +9,13 @@ public class ResponseTest {
 
     @Test
     void testUnsupportedCommand(){
-        assertEquals("{ \"result\": \"ERROR\", \"data\": { message: \"Unsupported command\" } }",
+        assertEquals("{\"result\":\"ERROR\",\"data\":{\"message\":\"Unsupported command\"}}",
                 response.UnsupportedCommand());
     }
 
     @Test
     void testInvalidArguments(){
-        assertEquals("{ \"result\": \"ERROR\", \"data\": { message: \"Could not parse arguments\" } }",
+        assertEquals("{\"result\":\"ERROR\",\"data\":{\"message\":\"Could not parse arguments\"}}",
                 response.InvalidArguments());
     }
 
