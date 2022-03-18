@@ -10,10 +10,11 @@ Maven
 
 Developer setup:
 
-*Ensure all relevant technologies are installed.
-*In your terminal run: git clone https://github.com/wtc-cohort-2020/0111-robot-worlds.git
-*Open the project in your prefered IDE
-*Run the server and the client from your IDE
+* Ensure all relevant technologies are installed.
+* In your terminal run: git clone https://github.com/wtc-cohort-2020/0111-robot-worlds.git
+* Open the project in your prefered IDE
+* Run the server and the client from your IDE
+
 
 Architecture:
 This project consist of a server and client. For this project we adopted an object oriented programming style.
