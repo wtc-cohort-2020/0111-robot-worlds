@@ -7,7 +7,7 @@ Technologies:
 * Java
 * Maven
 * JUnit
-* 
+
 
 Developer setup:
 
