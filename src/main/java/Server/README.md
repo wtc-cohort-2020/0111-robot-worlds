@@ -4,9 +4,10 @@ This project consist of two programs, the server and the client. The server prog
 
 Technologies:
 
-Java
-Maven
-
+* Java
+* Maven
+* JUnit
+* 
 
 Developer setup:
 
